@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 							optimization: 2
 						},
 						files: {
-							"css/main.css": "protected/less/main.less"
+							"css/site.css": "protected/less/site.less"
 						}
 					}
 				},
