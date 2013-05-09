@@ -1,0 +1,20 @@
+{
+  "name": "kmonki-ng",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:valan/kmonki-ng.git"
+  },
+  "dependencies": {
+    "jquery": "https://github.com/components/jquery.git#1.9.1",
+    "angular": "https://github.com/angular/bower-angular.git#v1.0.5",
+    "lodash": "https://github.com/bestiejs/lodash.git#v1.0.1",
+    "angular-local-storage": "https://github.com/grevory/angular-local-storage.git"
+  },
+  "gitHead": "85ff126431748eecc693a6af2ba11ef1ccc4debf",
+  "readme": "### To Build:\r\n\r\n* install nodejs\r\n* npm install grunt-cli -g\r\n* npm install bower -g\r\n* npm install\r\n* bower install\r\n* grunt",
+  "readmeFilename": "README.md",
+  "_id": "kmonki-ng@0.0.1",
+  "description": "* install nodejs\r * npm install grunt-cli -g\r * npm install bower -g\r * npm install\r * bower install\r * grunt",
+  "commit": "85ff126431748eecc693a6af2ba11ef1ccc4debf"
+}

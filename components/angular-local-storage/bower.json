@@ -1,0 +1,9 @@
+{
+  "name": "angular-local-storage",
+  "version": "0.0.0",
+  "commit": "184c26fb5c6ad3447beae8ab3a61fee864cccea3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grevory/angular-local-storage.git"
+  }
+}

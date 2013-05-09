@@ -1,0 +1,13 @@
+{
+    "name": "hnn",
+    "version": "0.0.1",
+    "dependencies": {
+        "jquery": "https://github.com/components/jquery.git#1.9.1",
+        "angular": "https://github.com/angular/bower-angular.git#v1.0.5",
+        "angular-ui": "https://github.com/angular-ui/angular-ui.git#v0.4.0",
+        "angular-local-storage": "https://github.com/grevory/angular-local-storage.git",
+        "modernizr": "https://github.com/Modernizr/Modernizr.git#v2.6.2",
+        "lodash": "https://github.com/bestiejs/lodash.git#v1.0.1",
+        "angular-ui-router": "latest"
+    }
+}

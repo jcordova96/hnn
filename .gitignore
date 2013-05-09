@@ -1,0 +1,17 @@
+*~
+*.bak
+Thumbs.db
+desktop.ini
+.DS_Store
+.buildpath
+.project
+.settings
+*.tmproj
+build
+nbproject/
+.idea
+*.orig
+
+/node_modules
+/assets/js/vendor
+/protected/messages
