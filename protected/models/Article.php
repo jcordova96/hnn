@@ -47,10 +47,11 @@ class Article extends CActiveRecord
 		$data = array();
 
 		$sql = "
-			select a.title, a.author, a.source, a.teaser, a.source_date, c.name as category
+			select a.title, a.author, a.source, a.teaser, a.source_date, a.created, c.name as category
 			from article a
 			left join article_category_xref acxr on a.id = acxr.article_id
 			left join category c on c.id = acxr.category_id
+			left join file f on a.id = acxr.category_id
 			order by a.created
 			limit {$num};
 			";
