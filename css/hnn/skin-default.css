@@ -48,6 +48,12 @@ a,
     color: #414042;
 }
 
+h1.invert{
+    color:#ffffff;
+    background-color: #414042;
+    padding-left: 1em;
+}
+
 #home_slider .text{
     background-color: #333333;
 }
