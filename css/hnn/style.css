@@ -960,48 +960,48 @@ html[xmlns] .slides {
 }
 
 .post-format-video {
-    background: url(../images/post-format/video.png) no-repeat center center;
+    background: url(../../images/post-format/video.png) no-repeat center center;
 }
 
 .post-format-standart {
-    background: url(../images/post-format/standart.png) no-repeat center center;
+    background: url(../../images/post-format/standart.png) no-repeat center center;
 }
 
 .post-format-aside {
-    background: url(../images/post-format/aside.png) no-repeat center center;
+    background: url(../../images/post-format/aside.png) no-repeat center center;
 }
 
 .post-format-gallery {
-    background: url(../images/post-format/gallery.png) no-repeat center center;
+    background: url(../../images/post-format/gallery.png) no-repeat center center;
 }
 
 .post-format-quote {
-    background: url(../images/post-format/quote.png) no-repeat center center;
+    background: url(../../images/post-format/quote.png) no-repeat center center;
 }
 
 .entry:hover .post-format-video,
 .latest-blog li:hover .post-format-video {
-    background: url(../images/post-format/video-hover.png) no-repeat center center;
+    background: url(../../images/post-format/video-hover.png) no-repeat center center;
 }
 
 .entry:hover .post-format-standart,
 .latest-blog li:hover .post-format-standart {
-    background: url(../images/post-format/standart-hover.png) no-repeat center center;
+    background: url(../../images/post-format/standart-hover.png) no-repeat center center;
 }
 
 .entry:hover .post-format-aside,
 .latest-blog li:hover .post-format-aside {
-    background: url(../images/post-format/aside-hover.png) no-repeat center center;
+    background: url(../../images/post-format/aside-hover.png) no-repeat center center;
 }
 
 .entry:hover .post-format-gallery,
 .latest-blog li:hover .post-format-gallery {
-    background: url(../images/post-format/gallery-hover.png) no-repeat center center;
+    background: url(../../images/post-format/gallery-hover.png) no-repeat center center;
 }
 
 .entry:hover .post-format-quote,
 .latest-blog li:hover .post-format-quote {
-    background: url(../images/post-format/quote-hover.png) no-repeat center center;
+    background: url(../../images/post-format/quote-hover.png) no-repeat center center;
 }
 
 /*====================== ELASTIC VIDEO ======================*/

@@ -67,15 +67,15 @@ h1.invert{
 .title,
 #header,
 #welcome{
-    /*background: url(../images/divider.png) repeat-x bottom left !important;*/
+    /*background: url(../../images/divider.png) repeat-x bottom left !important;*/
 }
 
 .pagination{
-    /*background: url(../images/divider.png) repeat-x top left;*/
+    /*background: url(../../images/divider.png) repeat-x top left;*/
 }
 
 #welcome h1{
-    background: url(../images/divider2.png) repeat-y right top;
+    background: url(../../images/divider2.png) repeat-y right top;
 }
 
 
@@ -143,7 +143,7 @@ h1.invert{
     background-color: #e95850;
 }
 #home_slider .num span{border-bottom: 1px solid #f4746d;}
-#home_slider .num a{background-image: url(../images/slider-link.png);}
+#home_slider .num a{background-image: url(../../images/slider-link.png);}
 
 
 #home_slider h2,
@@ -152,10 +152,10 @@ h1.invert{
 #home_slider h2{border-left: 1px solid #4D4D4D;}
 #home_slider p{border-right: 1px solid #4D4D4D;}
 
-.flex-direction-nav a.flex-prev{background-image: url(../images/slider-prev.png);}
-.flex-direction-nav a.flex-next{background-image: url(../images/slider-next.png);}
-.flex-direction-nav a.flex-prev:hover{background-image: url(../images/slider-prev-hover.png);}
-.flex-direction-nav a.flex-next:hover{background-image: url(../images/slider-next-hover.png);}
+.flex-direction-nav a.flex-prev{background-image: url(../../images/slider-prev.png);}
+.flex-direction-nav a.flex-next{background-image: url(../../images/slider-next.png);}
+.flex-direction-nav a.flex-prev:hover{background-image: url(../../images/slider-prev-hover.png);}
+.flex-direction-nav a.flex-next:hover{background-image: url(../../images/slider-next-hover.png);}
 
 
 
@@ -172,10 +172,10 @@ h1.invert{
 
 .accordion-heading a{
     border-bottom: 1px solid #f5f5f5;
-    background: url(../images/accordion-plus.png) no-repeat right center;
+    background: url(../../images/accordion-plus.png) no-repeat right center;
 }
 .accordion-heading a.acc-active{
-    background: url(../images/accordion-minus.png) no-repeat right center;
+    background: url(../../images/accordion-minus.png) no-repeat right center;
 }
 
 
@@ -190,7 +190,7 @@ h1.invert{
     border: 1px solid #f2f2f2;
 }
 .features [class*="span"]{
-    background-image: url(../images/box-bg.png);
+    background-image: url(../../images/box-bg.png);
 }
 
 
@@ -206,10 +206,10 @@ h1.invert{
 }
 
 .portfolio div a.portfolio-view{
-    background-image: url(../images/portfolio-view.png);
+    background-image: url(../../images/portfolio-view.png);
 }
 .portfolio div a.portfolio-link{
-    background-image: url(../images/portfolio-link.png);
+    background-image: url(../../images/portfolio-link.png);
 }
 .portfolio div a:hover{
     background-color: rgba(255,255,255, 0.1);
@@ -245,7 +245,7 @@ h1.invert{
     -moz-box-shadow: 0 1px 0 #e5e5e5;
 }
 .testimonials .t-text span{
-    background-image: url(../images/testimonials-arrow.png);
+    background-image: url(../../images/testimonials-arrow.png);
 }
 
 
@@ -253,10 +253,10 @@ h1.invert{
 
 /*==================== CAROUSEL =====================*/
 .flex-carousel .es-nav-prev{
-    background: url(../images/carousel-prev.png) no-repeat center bottom;
+    background: url(../../images/carousel-prev.png) no-repeat center bottom;
 }
 .flex-carousel .es-nav-next{
-    background: url(../images/carousel-next.png) no-repeat center bottom;
+    background: url(../../images/carousel-next.png) no-repeat center bottom;
 }
 
 
@@ -265,11 +265,11 @@ h1.invert{
 /*====================== FOOTER ======================*/
 #footer{
     color: #d0d0d0;
-    background-image: url(../images/footer-bg.jpg);
+    background-image: url(../../images/footer-bg.jpg);
 }
 #footer .title{
     color: #e1e1e1;
-    background-image: url(../images/footer-divider.png) !important;
+    background-image: url(../../images/footer-divider.png) !important;
 }
 #footer a{
     color: #fff;
@@ -282,40 +282,40 @@ h1.invert{
     background: rgba(0, 0, 0, 0.1) no-repeat 15px center;
 }
 #footer .social li.twitter a{
-    background-image: url(../images/icon/twitter.png);
+    background-image: url(../../images/icon/twitter.png);
 }
 #footer .social li.facebook a{
-    background-image: url(../images/icon/facebook.png);
+    background-image: url(../../images/icon/facebook.png);
 }
 #footer .social li.dribbble a{
-    background-image: url(../images/icon/dribbble.png);
+    background-image: url(../../images/icon/dribbble.png);
 }
 #footer .social li.vimeo a{
-    background-image: url(../images/icon/vimeo.png);
+    background-image: url(../../images/icon/vimeo.png);
 }
 #footer .social li.flickr a{
-    background-image: url(../images/icon/flickr.png);
+    background-image: url(../../images/icon/flickr.png);
 }
 #footer .social li.pinterest a{
-    background-image: url(../images/icon/pinterest.png);
+    background-image: url(../../images/icon/pinterest.png);
 }
 #footer .social li.twitter a:hover{
-    background: #00bef6 url(../images/icon/twitter2.png) no-repeat 15px center;
+    background: #00bef6 url(../../images/icon/twitter2.png) no-repeat 15px center;
 }
 #footer .social li.facebook a:hover{
-    background: #3b5998 url(../images/icon/facebook2.png) no-repeat 15px center;
+    background: #3b5998 url(../../images/icon/facebook2.png) no-repeat 15px center;
 }
 #footer .social li.dribbble a:hover{
-    background: #e3558b url(../images/icon/dribbble2.png) no-repeat 15px center;
+    background: #e3558b url(../../images/icon/dribbble2.png) no-repeat 15px center;
 }
 #footer .social li.vimeo a:hover{
-    background: #00adef url(../images/icon/vimeo2.png) no-repeat 15px center;
+    background: #00adef url(../../images/icon/vimeo2.png) no-repeat 15px center;
 }
 #footer .social li.flickr a:hover{
-    background: #0063dc url(../images/icon/flickr2.png) no-repeat 15px center;
+    background: #0063dc url(../../images/icon/flickr2.png) no-repeat 15px center;
 }
 #footer .social li.pinterest a:hover{
-    background: #cb2027 url(../images/icon/pinterest2.png) no-repeat 15px center;
+    background: #cb2027 url(../../images/icon/pinterest2.png) no-repeat 15px center;
 }
 #footer .social li a:hover{
     color: #fff;
@@ -352,22 +352,22 @@ h1.invert{
     border-bottom: 1px solid #E3E3E3;
 }
 .team [class*="span"] .social li.twitter a{
-    background-image: url(../images/icon/twitter.png);
+    background-image: url(../../images/icon/twitter.png);
 }
 .team [class*="span"] .social li.facebook a{
-    background-image: url(../images/icon/facebook.png);
+    background-image: url(../../images/icon/facebook.png);
 }
 .team [class*="span"] .social li.dribbble a{
-    background-image: url(../images/icon/dribbble.png);
+    background-image: url(../../images/icon/dribbble.png);
 }
 .team [class*="span"] .social li.pinterest a{
-    background-image: url(../images/icon/pinterest.png);
+    background-image: url(../../images/icon/pinterest.png);
 }
 .team [class*="span"] .social li.vimeo a{
-    background-image: url(../images/icon/vimeo.png);
+    background-image: url(../../images/icon/vimeo.png);
 }
 .team [class*="span"] .social li.flickr a{
-    background-image: url(../images/icon/flickr.png);
+    background-image: url(../../images/icon/flickr.png);
 }
 
 
@@ -387,13 +387,13 @@ h1.invert{
     /*CATEGORIES*/
     #sidebar .categories a,
     #sidebar .menu-filtrable li a{
-        background: url(../images/filtrable-off.png) no-repeat left center;
+        background: url(../../images/filtrable-off.png) no-repeat left center;
     }
     #sidebar .categories .current a,
     #sidebar .categories a:hover,
     #sidebar .menu-filtrable li.current a{
         color: #444444;
-        background: url(../images/filtrable-on.png) no-repeat left center;
+        background: url(../../images/filtrable-on.png) no-repeat left center;
     }
 
 
