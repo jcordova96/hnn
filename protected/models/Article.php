@@ -62,6 +62,7 @@ class Article extends CActiveRecord
 		{
 			foreach($result as $row)
 			{
+				$row['teaser'] = strip_tags($row['teaser']);
 				$data[$row['category']][] = $row;
 			}
 		}
