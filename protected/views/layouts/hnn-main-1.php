@@ -57,7 +57,7 @@
 
         <!-- .span3.logo -->
         <div class="span6 logo">
-            <a href="./index.html"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/logo-gr.png" alt="Logo"/></a>
+            <a href="/"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/logo-gr.png" alt="Logo"/></a>
         </div>
         <!-- /.span3.logo -->
 
@@ -101,24 +101,24 @@
         <div class="nav-collapse">
             <ul class="nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">News At Home</a></li>
-                <li><a href="#">News Abroad</a></li>
-                <li><a href="#">History</a></li>
-                <li><a href="#">Features</a></li>
-                <li><a href="#">Books</a></li>
-                <li><a href="#">Roundup</a></li>
+                <li><a href="/article/category/3">News At Home</a></li>
+                <li><a href="/article/category/10">News Abroad</a></li>
+                <li><a href="/article/category/4">History</a></li>
+                <li><a href="/article/category/15">Features</a></li>
+                <li><a href="/article/category/100">Books</a></li>
+                <li><a href="/article/category/25">Roundup</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Blogs <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Mythic America</a></li>
-                        <li><a href="#">L&P</a></li>
-                        <li><a href="#">Gil Troy</a></li>
-                        <li><a href="#">Iwan Morgan</a></li>
-                        <li><a href="#">Josh Brown</a></li>
-                        <li><a href="#">Jim Loewen</a></li>
-                        <li><a href="#">Walid Phares</a></li>
-                        <li><a href="#">Stephanie Coontz</a></li>
-                        <li><a href="#">Steve Hochstadt</a></li>
+                        <li><a href="/blog/author/">Mythic America</a></li>
+                        <li><a href="/blog/author/">L&P</a></li>
+                        <li><a href="/blog/author/11">Gil Troy</a></li>
+                        <li><a href="/blog/author/">Iwan Morgan</a></li>
+                        <li><a href="/blog/author/15">Josh Brown</a></li>
+                        <li><a href="/blog/author/10">Jim Loewen</a></li>
+                        <li><a href="/blog/author/13">Walid Phares</a></li>
+                        <li><a href="/blog/author/6">Stephanie Coontz</a></li>
+                        <li><a href="/blog/author/4">Steve Hochstadt</a></li>
                         <li class="divider"></li>
                         <li class="nav-header">Clio's Blog Roll</li>
                         <li><a href="#">Part 1</a></li>

@@ -12,6 +12,7 @@ nbproject/
 .idea
 *.orig
 
+/sites/default/files
 /node_modules
 /assets/js/vendor
 /protected/messages

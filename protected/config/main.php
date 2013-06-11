@@ -53,8 +53,8 @@ return array(
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=hnn',
 			'emulatePrepare' => true,
-			'username' => 'susa',
-			'password' => 'ftybr9',
+			'username' => 'hnn',
+			'password' => 'hnn',
 			'charset' => 'utf8',
 		),
 		'errorHandler'=>array(

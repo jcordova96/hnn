@@ -5,6 +5,8 @@ class SiteController extends Controller
 	/**
 	 * Declares class-based actions.
 	 */
+	public $layout='//layouts/column2';
+
 	public function actions()
 	{
 		return array(
@@ -27,8 +29,10 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+		$this->layout = '//layouts/column1';
+
 		$data = array('data' => array(
-			'recent_articles' => Article::getMostRecentArticles(15)
+			'recent_articles' => Article::getMostRecentArticles(150)
 		));
 
 		$this->render('index', $data);
@@ -53,6 +57,8 @@ class SiteController extends Controller
 	 */
 	public function actionContact()
 	{
+		$this->layout = '//layouts/column1';
+
 		$model=new ContactForm;
 		if(isset($_POST['ContactForm']))
 		{

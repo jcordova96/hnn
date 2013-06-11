@@ -1,6 +1,6 @@
 <?php
 
-class ArticleController extends Controller
+class FileController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -28,11 +28,11 @@ class ArticleController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'detail', 'category'),
+				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array(),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -44,36 +44,6 @@ class ArticleController extends Controller
 			),
 		);
 	}
-
-	public function actionDetail($id)
-	{
-		$this->layout = '//layouts/column1';
-
-		$article = Article::model()->findByPk($id)->getAttributes();
-		$article['lead_text'] = '';
-//		$article['images'] = File::getImages($id, "hnn");
-
-		$data = array('data' => array(
-			'article' => $article
-		));
-
-//		echo '<pre>'.print_r($article['images'], true).'</pre>';
-
-		$this->render('detail', $data);
-	}
-
-
-	public function actionCategory($id)
-	{
-		$this->layout = '//layouts/column1';
-
-		$data = array('data' => array(
-			'articles' => Article::getArticleByCategory($id)
-		));
-
-		$this->render('category', $data);
-	}
-
 
 	/**
 	 * Displays a particular model.
@@ -92,14 +62,14 @@ class ArticleController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Article;
+		$model=new File;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Article']))
+		if(isset($_POST['File']))
 		{
-			$model->attributes=$_POST['Article'];
+			$model->attributes=$_POST['File'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -121,9 +91,9 @@ class ArticleController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Article']))
+		if(isset($_POST['File']))
 		{
-			$model->attributes=$_POST['Article'];
+			$model->attributes=$_POST['File'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -152,22 +122,21 @@ class ArticleController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Article');
+		$dataProvider=new CActiveDataProvider('File');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
 	}
-
 
 	/**
 	 * Manages all models.
 	 */
 	public function actionAdmin()
 	{
-		$model=new Article('search');
+		$model=new File('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Article']))
-			$model->attributes=$_GET['Article'];
+		if(isset($_GET['File']))
+			$model->attributes=$_GET['File'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -178,12 +147,12 @@ class ArticleController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Article the loaded model
+	 * @return File the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Article::model()->findByPk($id);
+		$model=File::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -191,11 +160,11 @@ class ArticleController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Article $model the model to be validated
+	 * @param File $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='article-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='file-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

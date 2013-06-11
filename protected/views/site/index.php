@@ -16,18 +16,28 @@ $this->pageTitle = Yii::app()->name;
     <?php foreach ($aData as $article_data): ?>
         <ul class="thumbnails">
             <li class="span2">
-                <div class="thumbnail">
-                    <a href="#"><img src="http://placehold.it/260x180" alt=""></a>
-                </div>
-            </li>
+				<?php if (!empty($article_data['tn_img'])): ?>
+	                <div class="thumbnail">
+						<a href="/article/detail/<?php echo $article_data['id']; ?>">
+							<img src="<?php echo '/'.$article_data['tn_img']; ?>"
+								 alt="">
+						</a>
+	                </div>
+				<?php endif; ?>
+			</li>
+
             <li class="span4">
                 <span
                     class="article-info">Originally published <?php echo date("m/d/Y", $article_data['created']); ?></span>
 
-                <h3><a href="#"><?php echo $article_data['title']; ?></a></h3>
+                <h3>
+					<a href="/article/detail/<?php echo $article_data['id']; ?>">
+						<?php echo $article_data['title']; ?>
+					</a>
+				</h3>
 
                 <?php if (!empty($article_data['author'])): ?>
-                <span class="byline">by <?php echo $article_data['author'] ?></span>
+	                <span class="byline">by <?php echo $article_data['author'] ?></span>
                 <?php endif; ?>
 
                 <p><?php echo $article_data['teaser']; ?></p>

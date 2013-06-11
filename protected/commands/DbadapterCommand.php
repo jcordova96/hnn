@@ -15,7 +15,7 @@ class DbadapterCommand extends CConsoleCommand
 //		$this->processArticles();
 //		$this->processBlogs();
 //		$this->processTerms();
-//		$this->processFiles();
+		$this->processFiles();
 
 //		$this->processUsers();
 //		$this->processComments();
@@ -82,6 +82,7 @@ class DbadapterCommand extends CConsoleCommand
 			CREATE TABLE hnn.blog (
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  uid int(11) unsigned NOT NULL DEFAULT 0,
+			  author_id int(11) unsigned NOT NULL DEFAULT 0,
 			  type varchar(32) NOT NULL DEFAULT '',
 			  title varchar(255) NOT NULL DEFAULT '',
 			  author varchar(255) NOT NULL DEFAULT '',
@@ -91,13 +92,14 @@ class DbadapterCommand extends CConsoleCommand
 			  status int(11) NOT NULL DEFAULT 1,
 			  created int(11) NOT NULL DEFAULT 0,
 			  PRIMARY KEY (id),
-			  KEY uid (uid)
+			  KEY uid (uid),
+			  KEY author_id (author_id)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 		";
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.article (id, type, title, uid, status, created, body, teaser, author, source)
+			insert into hnn.blog (id, type, title, uid, status, created, body, teaser, author, source)
 				select n.nid as id, n.type, n.title, n.uid, n.status, n.created,
 					nr.body, nr.teaser,
 					cfa.field_author_value as author,
@@ -111,6 +113,39 @@ class DbadapterCommand extends CConsoleCommand
 		$result = $this->executeQuery($sql);
 
 		echo "result: {$result}\n";
+
+		$sql = "
+			DROP TABLE IF EXISTS hnn.blog_author;
+			CREATE TABLE hnn.blog_author (
+			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+			  author varchar(255) NOT NULL DEFAULT '',
+			  PRIMARY KEY (id)
+			) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+		";
+		$this->executeQuery($sql);
+
+		$sql = "
+			insert into hnn.blog_author (author)
+				select distinct author
+				from hnn.blog
+		";
+		$result = $this->executeQuery($sql);
+
+		$connection = Yii::app()->db;
+		$command = $connection->createCommand('select * from hnn.blog_author');
+		$rows = $command->queryAll();
+		foreach($rows as $entry)
+		{
+			$sql = "
+				update hnn.blog set author_id = {$entry['id']} where author = '{$entry['author']}';
+			";
+			$command = $connection->createCommand($sql);
+			$command->execute();
+		}
+
+
+
+
 	}
 
 	private function processTerms()
@@ -169,18 +204,24 @@ class DbadapterCommand extends CConsoleCommand
 			  filename varchar(255) NOT NULL DEFAULT '',
 			  filepath varchar(255) NOT NULL DEFAULT '',
 			  filemime varchar(255) NOT NULL DEFAULT '',
+			  filesize int(10) unsigned NOT NULL DEFAULT 0,
+			  type varchar(32) NOT NULL DEFAULT '',
 			  timestamp int(10) unsigned NOT NULL DEFAULT '0',
 			  PRIMARY KEY (id),
-			  KEY nid (nid)
+			  KEY nid (nid),
+			  KEY type (type),
+			  KEY timestamp (timestamp)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		";
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.file (id, nid, filename, filepath, filemime, timestamp)
-				select f.fid as id, u.nid, f.filename, f.filepath, f.filemime, f.timestamp
+			insert into hnn.file (id, nid, filename, filepath, filemime, filesize, type, timestamp)
+				select f.fid as id, u.nid, f.filename, f.filepath, f.filemime, f.filesize, n.type,
+					f.timestamp
 				from hnn_edit.hnn_files f
 				left join hnn_edit.hnn_upload u on u.fid = f.fid
+				left join hnn_edit.hnn_node n on n.nid = u.nid
 
 				group by f.fid
 		";

@@ -1,29 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "article".
+ * This is the model class for table "blog".
  *
- * The followings are the available columns in table 'article':
+ * The followings are the available columns in table 'blog':
  * @property string $id
+ * @property string $uid
  * @property string $type
  * @property string $title
  * @property string $author
  * @property string $source
- * @property string $source_url
- * @property string $source_date
- * @property string $source_bio
  * @property string $body
  * @property string $teaser
- * @property integer $uid
  * @property integer $status
  * @property integer $created
  */
-class Article extends CActiveRecord
+class Blog extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Article the static model class
+	 * @return Blog the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -35,56 +32,20 @@ class Article extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'article';
+		return 'blog';
 	}
 
-	public static function getMostRecentArticles($num)
+	public static function getBlogByAuthor($author_id)
 	{
 		$connection = Yii::app()->db;
 
 		$data = array();
 
 		$sql = "
-			select a.id, a.title, a.author, a.source, a.teaser, a.source_date, a.created,
-				c.name as category
-			from article a
-			left join article_category_xref acxr on a.id = acxr.article_id
-			left join category c on c.id = acxr.category_id
-			order by a.created desc
-			limit {$num};
-			";
-
-		$command = $connection->createCommand($sql);
-		$result = $command->queryAll();
-
-		if(!empty($result))
-		{
-			foreach($result as $row)
-			{
-				$row['teaser'] = strip_tags($row['teaser']);
-				$row['tn_img'] = File::getTnImage($row['id'], 'hnn');
-				$data[$row['category']][] = $row;
-			}
-		}
-
-		return $data;
-	}
-
-
-	public static function getArticleByCategory($category_id)
-	{
-		$connection = Yii::app()->db;
-
-		$data = array();
-
-		$sql = "
-			select a.id, a.title, a.author, a.source, a.teaser, a.source_date, a.created,
-				c.name as category
-			from article a
-			left join article_category_xref acxr on a.id = acxr.article_id
-			left join category c on c.id = acxr.category_id
-			where acxr.category_id = {$category_id}
-			order by a.created desc
+			select b.id, b.title, b.author, b.source, b.teaser, b.created
+			from blog b
+			where b.author_id = {$author_id}
+			order by b.created desc
 			limit 100;
 			";
 
@@ -96,19 +57,13 @@ class Article extends CActiveRecord
 			foreach($result as $row)
 			{
 				$row['teaser'] = strip_tags($row['teaser']);
-				$row['tn_img'] = File::getTnImage($row['id'], 'hnn');
+				$row['tn_img'] = File::getTnImage($row['id'], 'hnn_b_type');
 				$data[] = $row;
 			}
 		}
 
 		return $data;
 	}
-
-
-
-
-
-
 
 
 	/**
@@ -119,14 +74,14 @@ class Article extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('source_bio, body, teaser', 'required'),
-			array('uid, status, created', 'numerical', 'integerOnly'=>true),
+			array('body, teaser', 'required'),
+			array('status, created', 'numerical', 'integerOnly'=>true),
+			array('uid', 'length', 'max'=>11),
 			array('type', 'length', 'max'=>32),
-			array('title, author, source, source_url', 'length', 'max'=>255),
-			array('source_date', 'length', 'max'=>50),
+			array('title, author, source', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, type, title, author, source, source_url, source_date, source_bio, body, teaser, uid, status, created', 'safe', 'on'=>'search'),
+			array('id, uid, type, title, author, source, body, teaser, status, created', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -138,7 +93,6 @@ class Article extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'categories' => array(self::MANY_MANY, 'category', 'article_category_xref(id, id)')
 		);
 	}
 
@@ -149,16 +103,13 @@ class Article extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'uid' => 'Uid',
 			'type' => 'Type',
 			'title' => 'Title',
 			'author' => 'Author',
 			'source' => 'Source',
-			'source_url' => 'Source Url',
-			'source_date' => 'Source Date',
-			'source_bio' => 'Source Bio',
 			'body' => 'Body',
 			'teaser' => 'Teaser',
-			'uid' => 'Uid',
 			'status' => 'Status',
 			'created' => 'Created',
 		);
@@ -176,16 +127,13 @@ class Article extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
+		$criteria->compare('uid',$this->uid,true);
 		$criteria->compare('type',$this->type,true);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('author',$this->author,true);
 		$criteria->compare('source',$this->source,true);
-		$criteria->compare('source_url',$this->source_url,true);
-		$criteria->compare('source_date',$this->source_date,true);
-		$criteria->compare('source_bio',$this->source_bio,true);
 		$criteria->compare('body',$this->body,true);
 		$criteria->compare('teaser',$this->teaser,true);
-		$criteria->compare('uid',$this->uid);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('created',$this->created);
 
