@@ -38,6 +38,43 @@ class Article extends CActiveRecord
 		return 'article';
 	}
 
+
+
+	public static function getMostRecentArticles($num)
+	{
+		$connection = Yii::app()->db;
+
+		$data = array();
+
+		$sql = "
+			select a.title, a.author, a.source, a.teaser, a.source_date, c.name as category
+			from article a
+			left join article_category_xref acxr on a.id = acxr.article_id
+			left join category c on c.id = acxr.category_id
+			order by a.created
+			limit {$num};
+			";
+
+		$command = $connection->createCommand($sql);
+		$result = $command->queryAll();
+
+		if(!empty($result))
+		{
+			foreach($result as $row)
+			{
+				$data[$row['category']][] = $row;
+			}
+		}
+
+		return $data;
+	}
+
+
+
+
+
+
+
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -65,6 +102,7 @@ class Article extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'categories' => array(self::MANY_MANY, 'category', 'article_category_xref(id, id)')
 		);
 	}
 

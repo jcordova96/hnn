@@ -1,6 +1,11 @@
 <?php
 /* @var $this SiteController */
 
+
+echo "<pre>".print_r($data['recent_articles'], true)."</pre>";
+
+
+
 $this->pageTitle=Yii::app()->name;
 ?>
 

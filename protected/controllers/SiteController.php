@@ -27,9 +27,11 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		$data = array('data' => array(
+			'recent_articles' => Article::getMostRecentArticles(15)
+		));
+
+		$this->render('index', $data);
 	}
 
 	/**

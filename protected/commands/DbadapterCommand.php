@@ -15,7 +15,7 @@ class DbadapterCommand extends CConsoleCommand
 //		$this->processArticles();
 //		$this->processBlogs();
 //		$this->processTerms();
-		$this->processFiles();
+//		$this->processFiles();
 
 //		$this->processUsers();
 //		$this->processComments();
@@ -55,8 +55,8 @@ class DbadapterCommand extends CConsoleCommand
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.article (id, type, title, author, source, source_url, source_date, source_bio,
-									 body, teaser, uid, status, created)
+			insert into hnn.article (id, type, title, uid, status, created, body, teaser, author,
+									 source, source_url, source_date, source_bio)
 				select n.nid as id, n.type, n.title, n.uid, n.status, n.created,
 					nr.body, nr.teaser,
 					cfa.field_author_value as author,
@@ -97,7 +97,7 @@ class DbadapterCommand extends CConsoleCommand
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.blog (id, uid, type, title, author, source, body, teaser, status, created)
+			insert into hnn.article (id, type, title, uid, status, created, body, teaser, author, source)
 				select n.nid as id, n.type, n.title, n.uid, n.status, n.created,
 					nr.body, nr.teaser,
 					cfa.field_author_value as author,
@@ -141,7 +141,8 @@ class DbadapterCommand extends CConsoleCommand
 			DROP TABLE IF EXISTS hnn.article_category_xref;
 			CREATE TABLE hnn.article_category_xref (
 			  article_id int(10) unsigned NOT NULL,
-			  category_id int(10) unsigned NOT NULL
+			  category_id int(10) unsigned NOT NULL,
+			  UNIQUE KEY article_category_index (article_id,category_id)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 		";
 		$this->executeQuery($sql);
