@@ -13,11 +13,10 @@ class DbadapterCommand extends CConsoleCommand
 	public function run($args)
 	{
 //		$this->processArticles();
-		$this->processBlogs();
-//		$this->processTerms(true);
-//		$this->processNodeCategories();
-//		$this->processFiles(true);
-//		$this->insertSelectFiles();
+//		$this->processBlogs();
+//		$this->processTerms();
+		$this->processFiles();
+
 //		$this->processUsers();
 //		$this->processComments();
 //		$this->processSeo();
@@ -36,7 +35,6 @@ class DbadapterCommand extends CConsoleCommand
 			DROP TABLE IF EXISTS hnn.article;
 			CREATE TABLE hnn.article (
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  nid int(10) unsigned NOT NULL,
 			  type varchar(32) NOT NULL DEFAULT '',
 			  title varchar(255) NOT NULL DEFAULT '',
 			  author varchar(255) NOT NULL DEFAULT '',
@@ -57,9 +55,9 @@ class DbadapterCommand extends CConsoleCommand
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.article (nid, type, title, author, source, source_url, source_date, source_bio,
+			insert into hnn.article (id, type, title, author, source, source_url, source_date, source_bio,
 									 body, teaser, uid, status, created)
-				select n.nid, n.type, n.title, n.uid, n.status, n.created,
+				select n.nid as id, n.type, n.title, n.uid, n.status, n.created,
 					nr.body, nr.teaser,
 					cfa.field_author_value as author,
 					cfsn.field_source_name_value as source,
@@ -83,7 +81,6 @@ class DbadapterCommand extends CConsoleCommand
 			DROP TABLE IF EXISTS hnn.blog;
 			CREATE TABLE hnn.blog (
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  nid int(10) unsigned NOT NULL,
 			  uid int(11) unsigned NOT NULL DEFAULT 0,
 			  type varchar(32) NOT NULL DEFAULT '',
 			  title varchar(255) NOT NULL DEFAULT '',
@@ -94,15 +91,14 @@ class DbadapterCommand extends CConsoleCommand
 			  status int(11) NOT NULL DEFAULT 1,
 			  created int(11) NOT NULL DEFAULT 0,
 			  PRIMARY KEY (id),
-			  KEY nid (nid),
 			  KEY uid (uid)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 		";
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.blog (nid, uid, type, title, author, source, body, teaser, status, created)
-				select n.nid, n.type, n.title, n.uid, n.status, n.created,
+			insert into hnn.blog (id, uid, type, title, author, source, body, teaser, status, created)
+				select n.nid as id, n.type, n.title, n.uid, n.status, n.created,
 					nr.body, nr.teaser,
 					cfa.field_author_value as author,
 					cfsn.field_source_name_value as source
@@ -120,8 +116,8 @@ class DbadapterCommand extends CConsoleCommand
 	private function processTerms()
 	{
 		$sql = "
-			DROP TABLE IF EXISTS hnn.term;
-			CREATE TABLE hnn.term (
+			DROP TABLE IF EXISTS hnn.category;
+			CREATE TABLE hnn.category (
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  name varchar(255) NOT NULL DEFAULT '',
 			  description longtext NOT NULL,
@@ -132,9 +128,30 @@ class DbadapterCommand extends CConsoleCommand
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.term (id, name, description, weight)
+			insert into hnn.category (id, name, description, weight)
 				select tid as id, name, description, weight
 				from hnn_edit.hnn_term_data
+				where vid = 1;
+		";
+		$result = $this->executeQuery($sql);
+
+		echo "result: {$result}\n";
+
+		$sql = "
+			DROP TABLE IF EXISTS hnn.article_category_xref;
+			CREATE TABLE hnn.article_category_xref (
+			  article_id int(10) unsigned NOT NULL,
+			  category_id int(10) unsigned NOT NULL
+			) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+		";
+		$this->executeQuery($sql);
+
+		$sql = "
+			insert into hnn.article_category_xref (article_id, category_id)
+				select tn.nid, tn.tid
+				from hnn_edit.hnn_term_node tn
+				left join hnn_edit.hnn_term_data td on tn.tid = td.tid
+				where td.vid = 1;
 		";
 		$result = $this->executeQuery($sql);
 
@@ -147,24 +164,24 @@ class DbadapterCommand extends CConsoleCommand
 			DROP TABLE IF EXISTS hnn.file;
 			CREATE TABLE hnn.file (
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  fid int(10) unsigned NOT NULL DEFAULT '0',
 			  nid int(10) unsigned NOT NULL DEFAULT '0',
 			  filename varchar(255) NOT NULL DEFAULT '',
 			  filepath varchar(255) NOT NULL DEFAULT '',
 			  filemime varchar(255) NOT NULL DEFAULT '',
 			  timestamp int(10) unsigned NOT NULL DEFAULT '0',
 			  PRIMARY KEY (id),
-			  KEY fid (fid),
 			  KEY nid (nid)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		";
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.file (fid, nid, filename, filepath, filemime, timestamp)
-				select f.fid, u.nid, f.filename, f.filepath, f.filemime, f.timestamp
+			insert into hnn.file (id, nid, filename, filepath, filemime, timestamp)
+				select f.fid as id, u.nid, f.filename, f.filepath, f.filemime, f.timestamp
 				from hnn_edit.hnn_files f
 				left join hnn_edit.hnn_upload u on u.fid = f.fid
+
+				group by f.fid
 		";
 		$result = $this->executeQuery($sql);
 

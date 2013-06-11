@@ -15,3 +15,6 @@ nbproject/
 /node_modules
 /assets/js/vendor
 /protected/messages
+/protected/runtime/application.log*
+
+
