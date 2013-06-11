@@ -26,7 +26,7 @@ return array(
 			'ipFilters'=>array('127.0.0.1','::1'),
 		),
 	),
-
+    'layout'=>'hnn-main-1',
 	// application components
 	'components'=>array(
 		'user'=>array(
@@ -53,8 +53,8 @@ return array(
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=hnn',
 			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => 'root',
+			'username' => 'hnn',
+			'password' => 'hnn',
 			'charset' => 'utf8',
 		),
 		'errorHandler'=>array(
