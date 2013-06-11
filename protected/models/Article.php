@@ -51,7 +51,7 @@ class Article extends CActiveRecord
 			from article a
 			left join article_category_xref acxr on a.id = acxr.article_id
 			left join category c on c.id = acxr.category_id
-			order by a.created
+			order by a.created desc
 			limit {$num};
 			";
 
