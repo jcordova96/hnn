@@ -178,6 +178,26 @@
     </div>
 
     <div id="right-column" class="span3 center-content">
+
+        <div id="news-widget" class="tabbable"> <!-- Only required for left/right tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#breaking-news-tab" data-toggle="tab">Breaking News</a></li>
+                <li><a href="#history-news-tab" data-toggle="tab">History News</a></li>
+                <li><a href="#dc-news-tab" data-toggle="tab">DC</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="breaking-news-tab">
+                    <p>Breaking news here .. </p>
+                </div>
+                <div class="tab-pane" id="history-news-tab">
+                    <p>History news here .. </p>
+                </div>
+                <div class="tab-pane" id="dc-news-tab">
+                    <p>DC news here .. </p>
+                </div>
+            </div>
+        </div>
+
         <div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/ad/historiansrateobama.jpg"/></div>
         <div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/ad/american-revolution-museum.jpg"/></div>
         <div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/ad/wiebe-ad.jpg"/></div>
