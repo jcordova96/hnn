@@ -50,18 +50,31 @@ module.exports = function(grunt) {
             foot: {
                 src: [
                     'assets/js/vendor/jquery/jquery.js',
-                    'assets/js/vendor/slidesjs/source/jquery.slides.js',
-                    'assets/js/vendor/lodash/lodash.js',
-                    'assets/js/vendor/angular/angular.js',
-                    'assets/js/vendor/angular-ui/build/angular-ui.js',
-                    'assets/js/vendor/angular-local-storage/localStorageModule.js',
-                    'assets/js/vendor/angular-ui-router/build/angular-ui-states.js',
-                    'assets/js/vendor/kmonki-ng/build/kmonki-ng.js',
-                    'assets/js/app/**/*.js',
-                    'assets/js/ng/**/*.js',
-                    'assets/js/templates.js'
+                    'js/google-code-prettify/prettify.js',
+                    'js/respond.js',
+                    'js/superfish.js',
+                    'js/hoverIntent.js',
+                    'js/jquery.easing.1.3.js',
+                    'js/jquery.prettyPhoto.js',
+                    'js/jquery.hoverdir.js',
+                    'js/jquery.flexslider.js',
+                    'js/jquery.elastislide.js',
+                    'js/jquery.tweet.js',
+                    'js/bootstrap.js',
+                    'js/main.js'
                 ],
                 dest: 'assets/js/foot.js'
+            },
+            style: {
+                src: [
+                    'css/hnn/bootstrap.css',
+                    'css/hnn/bootstrap-responsive.css',
+                    'css/hnn/style.css',
+                    'css/hnn/responsive.css',
+                    'css/hnn/skin-default.css',
+                    'css/hnn/prettyPhoto.css'
+                ],
+                dest: 'assets/css/style.css'
             }
         },
         uglify: {
@@ -77,7 +90,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['less', 'jshint', 'ngtemplates', 'concat', 'uglify']);
     grunt.registerTask('dev', ['less', 'jshint', 'ngtemplates', 'concat']);
 
-		grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');

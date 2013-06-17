@@ -59,7 +59,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'body'); ?>
-		<?php echo $form->textArea($model,'body',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $form->textArea($model,'body',array('rows'=>6, 'cols'=>50, 'class'=>'wysiwig')); ?>
 		<?php echo $form->error($model,'body'); ?>
 	</div>
 
