@@ -81,8 +81,16 @@
         <div class="nav-collapse">
             <ul class="nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li><a href="/article/category/3">News At Home</a></li>
-                <li><a href="/article/category/10">News Abroad</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">News <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Breaking News</a></li>
+                        <li><a href="#">History News</a></li>
+                        <li><a href="http://feeds.feedburner.com/historycoalition" target="_blank">DC News</a></li>
+                    </ul>
+                </li>
+                <li><a href="/article/category/3">At Home</a></li>
+                <li><a href="/article/category/10">Abroad</a></li>
                 <li><a href="/article/category/4">History</a></li>
                 <li><a href="/article/category/15">Features</a></li>
                 <li><a href="/article/category/100">Books</a></li>
@@ -120,14 +128,16 @@
 <!-- div#ad-top -->
 <div id="ad-top" class="row">
     <div class="span3 center-content">
-        <a href="http://chnm.gmu.edu/donate/" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/ad/chmm-donate-black1.png"></a>
+        <a href="http://chnm.gmu.edu/donate/" target="_blank"><img
+                src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/ad/chmm-donate-black1.png"></a>
     </div>
     <div class="span6 center-content">
         <a href="http://129.174.131.239/ad/redirect/138489/t151?url=home" target="_blank"><img
                 src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/ad/history-channel-long-banner.jpg"></a>
     </div>
     <div class="span3 center-content">
-        <a href="http://www.americanheritage.com/" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/ad/american-heritage.jpg"></a>
+        <a href="http://www.americanheritage.com/" target="_blank"><img
+                src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/ad/american-heritage.jpg"></a>
     </div>
 </div>
 <!-- /div#ad-top -->
@@ -149,6 +159,22 @@
                 }
             }(document, "script", "twitter-wjs");</script>
 
+        <!-- Blogs -->
+        <div id="blog-nav-sidebar">
+            <ul class="nav nav-tabs nav-stacked">
+                <h1 class="invert">Blogs</h1>
+                <li><a href="/blog/author/">Mythic America</a></li>
+                <li><a href="/blog/author/">L&P</a></li>
+                <li><a href="/blog/author/11">Gil Troy</a></li>
+                <li><a href="/blog/author/">Iwan Morgan</a></li>
+                <li><a href="/blog/author/15">Josh Brown</a></li>
+                <li><a href="/blog/author/10">Jim Loewen</a></li>
+                <li><a href="/blog/author/13">Walid Phares</a></li>
+                <li><a href="/blog/author/6">Stephanie Coontz</a></li>
+                <li><a href="/blog/author/4">Steve Hochstadt</a></li>
+            </ul>
+        </div>
+
     </div>
 
     <div id="center-column" class="span6">
@@ -158,6 +184,37 @@
     </div>
 
     <div id="right-column" class="span3 center-content">
+
+        <div id="news-widget" class="tabbable"> <!-- Only required for left/right tabs -->
+            <h1 class="invert">News</h1>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#breaking-news-tab" data-toggle="tab">Breaking News</a></li>
+                <li><a href="#history-news-tab" data-toggle="tab">History News</a></li>
+                <li><a href="http://feeds.feedburner.com/historycoalition" target="_blank">DC</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="breaking-news-tab">
+
+                    <ul>
+                        <li><a href="#">Link to story 1</a></li>
+                        <li><a href="#">Another headline for the next item, have to see this on ewrap so..</a></li>
+                        <li><a href="#">Third article would be going here</a></li>
+                        <li><a href="#">Link to story 4</a></li>
+                        <li><a href="#">More links to more articles</a></li>
+                    </ul>
+                </div>
+                <div class="tab-pane" id="history-news-tab">
+                    <ul>
+                        <li><a href="#">Another headline for the next item</a></li>
+                        <li><a href="#">Link to story 1</a></li>
+                        <li><a href="#">More links to more articles .. </a></li>
+                        <li><a href="#">Link to story 4</a></li>
+                        <li><a href="#">Third article would be going here</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/ad/historiansrateobama.jpg"/></div>
         <div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/ad/american-revolution-museum.jpg"/></div>
         <div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/ad/wiebe-ad.jpg"/></div>
@@ -292,7 +349,6 @@
 
 </footer>
 <!-- /#footer .container -->
-
 
 </section>
 <!-- /.container -->

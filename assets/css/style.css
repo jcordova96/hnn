@@ -7219,6 +7219,29 @@ div.article-image{
 div#ad-top{
     margin-bottom: 2em;
 }
+
+div#news-widget.tabbable ul.nav.nav-tabs
+{
+    margin-bottom: 0pt;
+}
+
+div#news-widget.tabbable ul.nav.nav-tabs li a
+{
+    font-weight: 700;
+}
+
+div#news-widget.tabbable div.tab-content
+{
+    padding:1em;
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+div#blog-nav-sidebar, div#news-widget
+{
+    text-align: left;
+}
 @media only screen and (min-width: 980px)  and (max-width: 1199px){
 
 
