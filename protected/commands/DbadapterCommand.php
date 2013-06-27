@@ -12,10 +12,10 @@ class DbadapterCommand extends CConsoleCommand
 
 	public function run($args)
 	{
-//		$this->processArticles();
+		$this->processArticles();
 //		$this->processBlogs();
 //		$this->processTerms();
-		$this->processFiles();
+//		$this->processFiles();
 
 //		$this->processUsers();
 //		$this->processComments();
@@ -36,6 +36,7 @@ class DbadapterCommand extends CConsoleCommand
 			CREATE TABLE hnn.article (
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  type varchar(32) NOT NULL DEFAULT '',
+			  category_id int(10) unsigned NOT NULL,
 			  title varchar(255) NOT NULL DEFAULT '',
 			  author varchar(255) NOT NULL DEFAULT '',
 			  source varchar(255) NOT NULL DEFAULT '',
@@ -55,9 +56,9 @@ class DbadapterCommand extends CConsoleCommand
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.article (id, type, title, uid, status, created, body, teaser, author,
+			insert into hnn.article (id, type, category_id, title, uid, status, created, body, teaser, author,
 									 source, source_url, source_date, source_bio)
-				select n.nid as id, n.type, n.title, n.uid, n.status, n.created,
+				select n.nid as id, n.type, tn.tid, n.title, n.uid, n.status, n.created,
 					nr.body, nr.teaser,
 					cfa.field_author_value as author,
 					cfsn.field_source_name_value as source,
@@ -68,7 +69,9 @@ class DbadapterCommand extends CConsoleCommand
 				left join hnn_edit.hnn_content_field_author cfa on n.nid = cfa.nid
 				left join hnn_edit.hnn_content_field_source_name cfsn on n.nid = cfsn.nid
 				left join hnn_edit.hnn_content_type_hnn cth on n.nid = cth.nid
+				left join hnn_edit.hnn_term_node tn on n.nid = tn.nid
 				where n.type = 'hnn'
+				group by n.nid
 		";
 		$result = $this->executeQuery($sql);
 
@@ -84,6 +87,7 @@ class DbadapterCommand extends CConsoleCommand
 			  uid int(11) unsigned NOT NULL DEFAULT 0,
 			  author_id int(11) unsigned NOT NULL DEFAULT 0,
 			  type varchar(32) NOT NULL DEFAULT '',
+			  category_id int(10) unsigned NOT NULL,
 			  title varchar(255) NOT NULL DEFAULT '',
 			  author varchar(255) NOT NULL DEFAULT '',
 			  source varchar(255) NOT NULL DEFAULT '',
@@ -99,8 +103,8 @@ class DbadapterCommand extends CConsoleCommand
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.blog (id, type, title, uid, status, created, body, teaser, author, source)
-				select n.nid as id, n.type, n.title, n.uid, n.status, n.created,
+			insert into hnn.blog (id, type, category_id, title, uid, status, created, body, teaser, author, source)
+				select n.nid as id, n.type, tn.tid, n.title, n.uid, n.status, n.created,
 					nr.body, nr.teaser,
 					cfa.field_author_value as author,
 					cfsn.field_source_name_value as source
@@ -108,7 +112,9 @@ class DbadapterCommand extends CConsoleCommand
 				left join hnn_edit.hnn_node_revisions nr on n.nid = nr.nid
 				left join hnn_edit.hnn_content_field_author cfa on n.nid = cfa.nid
 				left join hnn_edit.hnn_content_field_source_name cfsn on n.nid = cfsn.nid
+				left join hnn_edit.hnn_term_node tn on n.nid = tn.nid
 				where n.type = 'hnn_b_type'
+				group by n.nid
 		";
 		$result = $this->executeQuery($sql);
 

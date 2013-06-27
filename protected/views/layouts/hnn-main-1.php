@@ -16,32 +16,10 @@
     <title>History News Network</title>
     <!-- END: basic page needs -->
 
-    <!-- BEGIN: css -->
-    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/hnn/bootstrap.css" rel="stylesheet" type="text/css"/>
-    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/hnn/bootstrap-responsive.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/hnn/style.css" rel="stylesheet" type="text/css"/>
-    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/hnn/responsive.css" rel="stylesheet" type="text/css"/>
-    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/hnn/skin-default.css" rel="stylesheet" type="text/css"/>
-    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/hnn/prettyPhoto.css" rel="stylesheet" type="text/css"/>
-    <!-- END: css -->
+    <link href="<?php echo Yii::app()->request->baseUrl; ?>/assets/css/style.css" rel="stylesheet" type="text/css"/>
 
-    <!-- BEGIN: js -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-    <script type="text/javascript"
-            src="<?php echo Yii::app()->request->baseUrl; ?>/js/google-code-prettify/prettify.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/modernizr.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/respond.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/superfish.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/hoverIntent.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.easing.1.3.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.prettyPhoto.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.hoverdir.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flexslider.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.elastislide.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.tweet.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/main.js"></script>
+	<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/js/head.js"></script>
+
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <!-- END: js -->
@@ -284,6 +262,8 @@
             <h3 class="title">Latest Tweets</h3>
 
             <div class="tweet"></div>
+
+			<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/js/foot.js"></script>
 
             <script type="text/javascript">
                 $(document).ready(function () {
