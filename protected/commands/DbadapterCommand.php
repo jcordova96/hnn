@@ -12,13 +12,13 @@ class DbadapterCommand extends CConsoleCommand
 
 	public function run($args)
 	{
-		$this->processArticles();
+//		$this->processUsers();
+//		$this->processArticles();
 //		$this->processBlogs();
 //		$this->processTerms();
 //		$this->processFiles();
+		$this->processComments();
 
-//		$this->processUsers();
-//		$this->processComments();
 //		$this->processSeo();
 //		$this->processAds();
 //		$this->processStats();
@@ -29,13 +29,51 @@ class DbadapterCommand extends CConsoleCommand
 
 //--------------------------------------------------------------------------------------------------->
 
+	private function processUsers()
+	{
+		$sql = "
+            DROP TABLE IF EXISTS hnn.user;
+            CREATE TABLE hnn.user (
+              id int(10) unsigned NOT NULL AUTO_INCREMENT,
+              pass varchar(32) NOT NULL DEFAULT '',
+              mail varchar(64) DEFAULT '',
+              first_name varchar(32) DEFAULT '',
+              middle_name varchar(32) DEFAULT '',
+              last_name varchar(32) DEFAULT '',
+              created int(11) NOT NULL DEFAULT '0',
+              login int(11) NOT NULL DEFAULT '0',
+              status tinyint(4) NOT NULL DEFAULT '0',
+              PRIMARY KEY (id),
+              KEY mail (mail),
+              KEY created (created)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+		";
+		$this->executeQuery($sql);
+
+		$sql = "
+            INSERT INTO hnn.user (id, pass, mail, first_name, middle_name, last_name, created, login, status)
+
+                select u.uid as id, '', u.mail, pv1.value as first_name, pv2.value as middle_name, pv3.value as last_name,
+                  u.created, u.login, u.status
+                from hnn_edit.hnn_users u
+                left join hnn_edit.hnn_profile_values pv1 on u.uid = pv1.uid and pv1.fid = 1
+                left join hnn_edit.hnn_profile_values pv2 on u.uid = pv2.uid and pv2.fid = 2
+                left join hnn_edit.hnn_profile_values pv3 on u.uid = pv3.uid and pv3.fid = 3
+
+                group by pv1.uid;
+
+		";
+		$result = $this->executeQuery($sql);
+
+		echo "result: {$result}\n";
+	}
+
 	private function processArticles()
 	{
 		$sql = "
 			DROP TABLE IF EXISTS hnn.article;
 			CREATE TABLE hnn.article (
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  type varchar(32) NOT NULL DEFAULT '',
 			  category_id int(10) unsigned NOT NULL,
 			  title varchar(255) NOT NULL DEFAULT '',
 			  author varchar(255) NOT NULL DEFAULT '',
@@ -56,9 +94,9 @@ class DbadapterCommand extends CConsoleCommand
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.article (id, type, category_id, title, uid, status, created, body, teaser, author,
+			insert into hnn.article (id, category_id, title, uid, status, created, body, teaser, author,
 									 source, source_url, source_date, source_bio)
-				select n.nid as id, n.type, tn.tid, n.title, n.uid, n.status, n.created,
+				select n.nid as id, tn.tid, n.title, n.uid, n.status, n.created,
 					nr.body, nr.teaser,
 					cfa.field_author_value as author,
 					cfsn.field_source_name_value as source,
@@ -86,7 +124,6 @@ class DbadapterCommand extends CConsoleCommand
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  uid int(11) unsigned NOT NULL DEFAULT 0,
 			  author_id int(11) unsigned NOT NULL DEFAULT 0,
-			  type varchar(32) NOT NULL DEFAULT '',
 			  category_id int(10) unsigned NOT NULL,
 			  title varchar(255) NOT NULL DEFAULT '',
 			  author varchar(255) NOT NULL DEFAULT '',
@@ -103,8 +140,8 @@ class DbadapterCommand extends CConsoleCommand
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.blog (id, type, category_id, title, uid, status, created, body, teaser, author, source)
-				select n.nid as id, n.type, tn.tid, n.title, n.uid, n.status, n.created,
+			insert into hnn.blog (id, category_id, title, uid, status, created, body, teaser, author, source)
+				select n.nid as id, tn.tid, n.title, n.uid, n.status, n.created,
 					nr.body, nr.teaser,
 					cfa.field_author_value as author,
 					cfsn.field_source_name_value as source
@@ -124,16 +161,20 @@ class DbadapterCommand extends CConsoleCommand
 			DROP TABLE IF EXISTS hnn.blog_author;
 			CREATE TABLE hnn.blog_author (
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+			  uid int(10) unsigned NOT NULL,
 			  author varchar(255) NOT NULL DEFAULT '',
+			  description text default '',
 			  PRIMARY KEY (id)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 		";
 		$this->executeQuery($sql);
 
 		$sql = "
-			insert into hnn.blog_author (author)
-				select distinct author
-				from hnn.blog
+			insert into hnn.blog_author (author, uid)
+                SELECT DISTINCT (author) as author, uid
+                FROM hnn.blog
+                WHERE author !=  ''
+                GROUP BY author
 		";
 		$result = $this->executeQuery($sql);
 
@@ -142,16 +183,19 @@ class DbadapterCommand extends CConsoleCommand
 		$rows = $command->queryAll();
 		foreach($rows as $entry)
 		{
-			$sql = "
-				update hnn.blog set author_id = {$entry['id']} where author = '{$entry['author']}';
-			";
-			$command = $connection->createCommand($sql);
-			$command->execute();
+            if(!empty($entry['author']))
+            {
+                $sql = "
+                    update hnn.blog set author_id = {$entry['id']} where author = '{$entry['author']}';
+                ";
+                $command = $connection->createCommand($sql);
+                $command->execute();
+            }
 		}
 
-
-
-
+        $sql = "ALTER TABLE hnn.blog DROP COLUMN author;";
+        $command = $connection->createCommand($sql);
+        $command->execute();
 	}
 
 	private function processTerms()
@@ -236,57 +280,37 @@ class DbadapterCommand extends CConsoleCommand
 		echo "result: {$result}\n";
 	}
 
-	private function processUsers()
-	{
-		$connection = Yii::app()->db;
+    private function processComments()
+    {
+        $sql = "
+			DROP TABLE IF EXISTS hnn.comment;
+			CREATE TABLE hnn.comment (
+			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+              nid int(11) NOT NULL DEFAULT '0',
+              user_id int(11) NOT NULL DEFAULT '0',
+              name varchar(60) DEFAULT NULL,
+              subject varchar(64) NOT NULL DEFAULT '',
+              comment longtext NOT NULL,
+              timestamp int(11) NOT NULL DEFAULT '0',
+              PRIMARY KEY (id),
+              KEY nid (nid),
+              KEY comment_uid (user_id)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		";
+        $this->executeQuery($sql);
 
-		$sql = "
-			select *
-			from hnn_role
-			left join hnn_permissions
+        $sql = "
+            INSERT INTO hnn.comment (id, nid, user_id, name, subject, comment, timestamp)
+				select c.cid as id, c.nid, c.uid as user_id, c.name, c.subject, c.comment, c.timestamp
+				from hnn_edit.hnn_comments c
+		";
+        $result = $this->executeQuery($sql);
 
-		;";
-
-		$sql = "
-			select *
-			from hnn_users
-
-		;";
-
-		$sql = "
-			select *
-			from hnn_profile_fields
-			left join hnn_profile_values
-
-		;";
-
-		$command = $connection->createCommand($sql);
-		$rows = $command->queryAll();
-	}
-
-
-	private function processComments()
-	{
-		$connection = Yii::app()->db;
-
-		$sql = "
-			select *
-			from hnn_disqus
-
-		;";
-
-		$sql = "
-			select *
-			from hnn_comments
-
-		;";
-
-		$command = $connection->createCommand($sql);
-		$rows = $command->queryAll();
-	}
+        echo "result: {$result}\n";
+    }
 
 
-	private function processSeo()
+    private function processSeo()
 	{
 		$connection = Yii::app()->db;
 

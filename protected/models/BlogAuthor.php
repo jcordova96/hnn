@@ -1,21 +1,20 @@
 <?php
 
 /**
- * This is the model class for table "category".
+ * This is the model class for table "blog_author".
  *
- * The followings are the available columns in table 'category':
+ * The followings are the available columns in table 'blog_author':
  * @property string $id
- * @property string $name
- * @property string $group_id
+ * @property string $uid
+ * @property string $author
  * @property string $description
- * @property integer $weight
  */
-class Category extends CActiveRecord
+class BlogAuthor extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Category the static model class
+	 * @return BlogAuthor the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -27,20 +26,20 @@ class Category extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'category';
+		return 'blog_author';
 	}
 
-    public static function getCategories()
+    public static function getAuthors()
     {
         $connection = Yii::app()->db;
 
         $data = array();
 
         $sql = "
-			select id, name
-			from category
-			where name != ''
-			order by name;
+			select id, author
+			from blog_author
+			where author != ''
+			order by author;
 			";
 
         $command = $connection->createCommand($sql);
@@ -50,13 +49,12 @@ class Category extends CActiveRecord
         {
             foreach($result as $row)
             {
-                $data[$row['id']] = $row['name'];
+                $data[$row['id']] = $row['author'];
             }
         }
 
         return $data;
     }
-
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -65,13 +63,13 @@ class Category extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('group_id, description', 'required'),
-			array('weight', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>255),
-			array('group_id', 'length', 'max'=>4),
+			array('uid', 'required'),
+			array('uid', 'length', 'max'=>10),
+			array('author', 'length', 'max'=>255),
+			array('description', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, group_id, description, weight', 'safe', 'on'=>'search'),
+			array('id, uid, author, description', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -93,10 +91,9 @@ class Category extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
-			'group_id' => 'Group',
+			'uid' => 'Uid',
+			'author' => 'Author',
 			'description' => 'Description',
-			'weight' => 'Weight',
 		);
 	}
 
@@ -112,10 +109,9 @@ class Category extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('group_id',$this->group_id,true);
+		$criteria->compare('uid',$this->uid,true);
+		$criteria->compare('author',$this->author,true);
 		$criteria->compare('description',$this->description,true);
-		$criteria->compare('weight',$this->weight);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

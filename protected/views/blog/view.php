@@ -23,9 +23,9 @@ $this->menu=array(
 	'attributes'=>array(
 		'id',
 		'uid',
-		'type',
+		'author_id',
+		'category_id',
 		'title',
-		'author',
 		'source',
 		'body',
 		'teaser',
