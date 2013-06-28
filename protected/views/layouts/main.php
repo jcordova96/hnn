@@ -71,6 +71,7 @@
 	<div id="footer">
 
         <?php Yii::app()->clientScript->registerScriptFile('/js/jHtmlArea-0.7.5.js'); ?>
+        <?php Yii::app()->clientScript->registerScriptFile('/js/admin.js'); ?>
         <script type="text/javascript">
             $( document ).ready(function() {
                 $("textarea.wysiwig").htmlarea();

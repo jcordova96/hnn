@@ -58,7 +58,7 @@ class Blog extends CActiveRecord
             foreach($result as $row)
             {
                 $row['teaser'] = strip_tags($row['teaser']);
-                $row['tn_img'] = File::getTnImage($row['id'], 'hnn_b_type');
+                $row['tn_img'] = File::getTnImage($row['id'], 'blog');
                 $data[] = $row;
             }
         }

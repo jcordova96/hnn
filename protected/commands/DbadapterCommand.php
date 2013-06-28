@@ -277,6 +277,11 @@ class DbadapterCommand extends CConsoleCommand
 		";
 		$result = $this->executeQuery($sql);
 
+        $sql = "update file set type = 'article' where type = 'hnn'";
+        $this->executeQuery($sql);
+        $sql = "update file set type = 'blog' where type = 'hnn_b_type'";
+        $this->executeQuery($sql);
+
 		echo "result: {$result}\n";
 	}
 

@@ -62,7 +62,7 @@ class Article extends CActiveRecord
             foreach($result as $row)
             {
                 $row['teaser'] = strip_tags($row['teaser']);
-                $row['tn_img'] = File::getTnImage($row['id'], 'hnn');
+                $row['tn_img'] = File::getTnImage($row['id'], 'article');
                 $data[$row['category']][] = $row;
             }
         }
@@ -97,7 +97,7 @@ class Article extends CActiveRecord
             foreach($result as $row)
             {
                 $row['teaser'] = strip_tags($row['teaser']);
-                $row['tn_img'] = File::getTnImage($row['id'], 'hnn');
+                $row['tn_img'] = File::getTnImage($row['id'], 'article');
                 $data[] = $row;
             }
         }
@@ -134,7 +134,7 @@ class Article extends CActiveRecord
             foreach($result as $row)
             {
                 $row['teaser'] = strip_tags($row['teaser']);
-                $row['tn_img'] = File::getTnImage($row['id'], 'hnn');
+                $row['tn_img'] = File::getTnImage($row['id'], 'article');
                 $data[] = $row;
             }
         }
@@ -206,19 +206,19 @@ class Article extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('category_id',$this->category_id,true);
+//		$criteria->compare('id',$this->id,true);
+//		$criteria->compare('category_id',$this->category_id,true);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('author',$this->author,true);
 		$criteria->compare('source',$this->source,true);
-		$criteria->compare('source_url',$this->source_url,true);
-		$criteria->compare('source_date',$this->source_date,true);
-		$criteria->compare('source_bio',$this->source_bio,true);
+//		$criteria->compare('source_url',$this->source_url,true);
+//		$criteria->compare('source_date',$this->source_date,true);
+//		$criteria->compare('source_bio',$this->source_bio,true);
 		$criteria->compare('body',$this->body,true);
-		$criteria->compare('teaser',$this->teaser,true);
-		$criteria->compare('uid',$this->uid);
-		$criteria->compare('status',$this->status);
-		$criteria->compare('created',$this->created);
+//		$criteria->compare('teaser',$this->teaser,true);
+//		$criteria->compare('uid',$this->uid);
+//		$criteria->compare('status',$this->status);
+//		$criteria->compare('created',$this->created);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

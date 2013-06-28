@@ -53,10 +53,16 @@ class ArticleController extends Controller
 		$article['lead_text'] = '';
 //		$article['images'] = File::getImages($id, "hnn");
 
-//        $legacy_comments = Comment::model()->findByFk('nid', $article['id']);
+        $result = Comment::model()->findAllByAttributes(array('nid' => $article['id']), array('order' => 'timestamp desc'));
+        $comments = array();
+        foreach($result as $row)
+            $comments[] = $row->getAttributes();
+
+//        echo print_r($comments, true);
 
         $data = array('data' => array(
-			'article' => $article
+			'article' => $article,
+            'legacy_comments' => $comments
 		));
 
 //		echo '<pre>'.print_r($article['images'], true).'</pre>';
@@ -117,7 +123,10 @@ class ArticleController extends Controller
 		{
 			$model->attributes=$_POST['Article'];
 			if($model->save())
+            {
+                File::saveUploadedImages($model);
 				$this->redirect(array('view','id'=>$model->id));
+            }
 		}
 
 		$this->render('create',array(
@@ -141,7 +150,13 @@ class ArticleController extends Controller
 		{
 			$model->attributes=$_POST['Article'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+            {
+                File::saveUploadedImages($model);
+                if(!empty($_POST['delete_files']))
+                    File::deleteFilesByPath($_POST['delete_files']);
+
+//				$this->redirect(array('view','id'=>$model->id));
+            }
 		}
 
 		$this->render('update',array(

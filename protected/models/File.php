@@ -33,6 +33,53 @@ class File extends CActiveRecord
 		return 'file';
 	}
 
+	public static function saveUploadedImages($model)
+	{
+        $uploaded_files = CUploadedFile::getInstances($model, 'file');
+//                echo "<pre>".print_r($uploaded_files, true)."</pre>";
+        if(!empty($uploaded_files))
+        {
+            foreach($uploaded_files as $uploaded_file)
+            {
+                $filename = $model->id . "-" . $uploaded_file->getName();
+                $filepath = 'sites' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR .
+                    'files'. DIRECTORY_SEPARATOR . $filename;
+                $uploaded_file->saveAs($filepath);
+
+                $file = new File();
+                $file->setAttributes(
+                    array(
+                        'nid' => $model->id,
+                        'filename' => $filename,
+                        'filepath' => $filepath,
+                        'filemime' => $uploaded_file->getType(),
+                        'filesize' => $uploaded_file->getSize(),
+                        'type' => get_class($model),
+                        'timestamp' => strtotime('now'),
+                    ));
+
+                $file->insert();
+                unset($file);
+            }
+        }
+    }
+
+	public static function deleteFilesByPath($filepaths)
+	{
+        if(!empty($filepaths))
+        {
+            foreach($filepaths as $filepath)
+            {
+                unlink($filepath);
+
+                $connection = Yii::app()->db;
+                $sql = "delete from file where filepath = '{$filepath}'";
+                $command = $connection->createCommand($sql);
+                $command->execute();
+            }
+        }
+    }
+
 	public static function getImages($nid, $type)
 	{
 		$connection = Yii::app()->db;
