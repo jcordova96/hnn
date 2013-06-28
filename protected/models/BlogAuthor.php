@@ -1,26 +1,20 @@
 <?php
 
 /**
- * This is the model class for table "blog".
+ * This is the model class for table "blog_author".
  *
- * The followings are the available columns in table 'blog':
+ * The followings are the available columns in table 'blog_author':
  * @property string $id
  * @property string $uid
- * @property string $author_id
- * @property string $category_id
- * @property string $title
- * @property string $source
- * @property string $body
- * @property string $teaser
- * @property integer $status
- * @property integer $created
+ * @property string $author
+ * @property string $description
  */
-class Blog extends CActiveRecord
+class BlogAuthor extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Blog the static model class
+	 * @return BlogAuthor the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -32,22 +26,20 @@ class Blog extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'blog';
+		return 'blog_author';
 	}
 
-    public static function getBlogByAuthor($author_id)
+    public static function getAuthors()
     {
         $connection = Yii::app()->db;
 
         $data = array();
 
         $sql = "
-			select b.id, b.title, ba.author, b.source, b.teaser, b.created
-			from blog b
-			left join blog_author ba on b.author_id = ba.id
-			where b.author_id = {$author_id}
-			order by b.created desc
-			limit 100;
+			select id, author
+			from blog_author
+			where author != ''
+			order by author;
 			";
 
         $command = $connection->createCommand($sql);
@@ -57,17 +49,13 @@ class Blog extends CActiveRecord
         {
             foreach($result as $row)
             {
-                $row['teaser'] = strip_tags($row['teaser']);
-                $row['tn_img'] = File::getTnImage($row['id'], 'blog');
-                $data[] = $row;
+                $data[$row['id']] = $row['author'];
             }
         }
 
         return $data;
     }
-
-
-    /**
+	/**
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()
@@ -75,14 +63,13 @@ class Blog extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, body', 'required'),
-			array('status, created', 'numerical', 'integerOnly'=>true),
-			array('uid, author_id', 'length', 'max'=>11),
-			array('category_id', 'length', 'max'=>10),
-			array('title, source', 'length', 'max'=>255),
+			array('uid', 'required'),
+			array('uid', 'length', 'max'=>10),
+			array('author', 'length', 'max'=>255),
+			array('description', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, author_id, category_id, title, source, body, teaser, status, created', 'safe', 'on'=>'search'),
+			array('id, uid, author, description', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -105,14 +92,8 @@ class Blog extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'uid' => 'Uid',
-			'author_id' => 'Author',
-			'category_id' => 'Category',
-			'title' => 'Title',
-			'source' => 'Source',
-			'body' => 'Body',
-			'teaser' => 'Teaser',
-			'status' => 'Status',
-			'created' => 'Created',
+			'author' => 'Author',
+			'description' => 'Description',
 		);
 	}
 
@@ -129,14 +110,8 @@ class Blog extends CActiveRecord
 
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('uid',$this->uid,true);
-		$criteria->compare('author_id',$this->author_id,true);
-		$criteria->compare('category_id',$this->category_id,true);
-		$criteria->compare('title',$this->title,true);
-		$criteria->compare('source',$this->source,true);
-		$criteria->compare('body',$this->body,true);
-		$criteria->compare('teaser',$this->teaser,true);
-		$criteria->compare('status',$this->status);
-		$criteria->compare('created',$this->created);
+		$criteria->compare('author',$this->author,true);
+		$criteria->compare('description',$this->description,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

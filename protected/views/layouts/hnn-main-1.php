@@ -1,3 +1,8 @@
+<?php
+    $blog_authors = BlogAuthor::getAuthors();
+?>
+
+
 <!DOCTYPE html>
 <!--[if lt IE 7 ]>
 <html class="ie ie6" lang="en"> <![endif]-->
@@ -84,8 +89,8 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">News <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Breaking News</a></li>
-                        <li><a href="#">History News</a></li>
+                        <li><a href="/article/category/55">Breaking News</a></li>
+                        <li><a href="/article/category/26">News Archives</a></li>
                         <li><a href="http://feeds.feedburner.com/historycoalition" target="_blank">DC News</a></li>
                     </ul>
                 </li>
@@ -93,29 +98,23 @@
                 <li><a href="/article/category/10">Abroad</a></li>
                 <li><a href="/article/category/4">History</a></li>
                 <li><a href="/article/category/15">Features</a></li>
-                <li><a href="/article/category/100">Books</a></li>
-                <li><a href="/article/category/25">Roundup</a></li>
+                <li><a href="/article/group/3">Books</a></li>
+                <li><a href="/article/group/2">Roundup</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Blogs <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/blog/author/">Mythic America</a></li>
-                        <li><a href="/blog/author/">L&P</a></li>
-                        <li><a href="/blog/author/11">Gil Troy</a></li>
-                        <li><a href="/blog/author/">Iwan Morgan</a></li>
-                        <li><a href="/blog/author/15">Josh Brown</a></li>
-                        <li><a href="/blog/author/10">Jim Loewen</a></li>
-                        <li><a href="/blog/author/13">Walid Phares</a></li>
-                        <li><a href="/blog/author/6">Stephanie Coontz</a></li>
-                        <li><a href="/blog/author/4">Steve Hochstadt</a></li>
-                        <li class="divider"></li>
-                        <li class="nav-header">Clio's Blog Roll</li>
-                        <li><a href="#">Part 1</a></li>
-                        <li><a href="#">Part 2</a></li>
+                        <?php foreach($blog_authors as $blog_author_id => $blog_author): ?>
+                            <li>
+                                <a href="/blog/author/<?php echo $blog_author_id; ?>">
+                                    <?php echo $blog_author; ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
                 </li>
             </ul>
-            <form class="navbar-search pull-right" action="">
-                <input type="text" class="search-query span2" placeholder="Search">
+            <form class="navbar-search pull-right" action="/search" method="get">
+                <input name="q" type="text" class="search-query span2" placeholder="Search">
             </form>
         </div>
         <!-- /.nav-collapse -->
@@ -165,15 +164,14 @@
         <div id="blog-nav-sidebar">
             <ul class="nav nav-tabs nav-stacked">
                 <h1 class="invert">Blogs</h1>
-                <li><a href="/blog/author/">Mythic America</a></li>
-                <li><a href="/blog/author/">L&P</a></li>
-                <li><a href="/blog/author/11">Gil Troy</a></li>
-                <li><a href="/blog/author/">Iwan Morgan</a></li>
-                <li><a href="/blog/author/15">Josh Brown</a></li>
-                <li><a href="/blog/author/10">Jim Loewen</a></li>
-                <li><a href="/blog/author/13">Walid Phares</a></li>
-                <li><a href="/blog/author/6">Stephanie Coontz</a></li>
-                <li><a href="/blog/author/4">Steve Hochstadt</a></li>
+
+                <?php foreach($blog_authors as $blog_author_id => $blog_author): ?>
+                    <li>
+                        <a href="/blog/author/<?php echo $blog_author_id; ?>">
+                            <?php echo $blog_author; ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
             </ul>
         </div>
 

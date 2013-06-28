@@ -5,7 +5,7 @@
  *
  * The followings are the available columns in table 'article':
  * @property string $id
- * @property string $type
+ * @property string $category_id
  * @property string $title
  * @property string $author
  * @property string $source
@@ -38,13 +38,13 @@ class Article extends CActiveRecord
 		return 'article';
 	}
 
-	public static function getMostRecentArticles($num)
-	{
-		$connection = Yii::app()->db;
+    public static function getMostRecentArticles($num)
+    {
+        $connection = Yii::app()->db;
 
-		$data = array();
+        $data = array();
 
-		$sql = "
+        $sql = "
 			select a.id, a.title, a.author, a.source, a.teaser, a.source_date, a.created,
 				c.name as category
 			from article a
@@ -54,64 +54,96 @@ class Article extends CActiveRecord
 			limit {$num};
 			";
 
-		$command = $connection->createCommand($sql);
-		$result = $command->queryAll();
+        $command = $connection->createCommand($sql);
+        $result = $command->queryAll();
 
-		if(!empty($result))
-		{
-			foreach($result as $row)
-			{
-				$row['teaser'] = strip_tags($row['teaser']);
-				$row['tn_img'] = File::getTnImage($row['id'], 'hnn');
-				$data[$row['category']][] = $row;
-			}
-		}
+        if(!empty($result))
+        {
+            foreach($result as $row)
+            {
+                $row['teaser'] = strip_tags($row['teaser']);
+                $row['tn_img'] = File::getTnImage($row['id'], 'article');
+                $data[$row['category']][] = $row;
+            }
+        }
 
-		return $data;
-	}
+        return $data;
+    }
 
 
-	public static function getArticleByCategory($category_id)
-	{
-		$connection = Yii::app()->db;
+    public static function getArticleByCategory($category_id, $params=array())
+    {
+        $connection = Yii::app()->db;
 
-		$data = array();
+        $data = array();
 
-		$sql = "
-			select a.id, a.title, a.author, a.source, a.teaser, a.source_date, a.created,
-				c.name as category
+        $sql = "
+			select a.id, a.title, a.author, a.source, a.teaser, a.source_date, a.created
 			from article a
-			left join article_category_xref acxr on a.id = acxr.article_id
-			left join category c on c.id = acxr.category_id
-			where acxr.category_id = {$category_id}
+			where a.category_id = {$category_id}
 			order by a.created desc
-			limit 100;
 			";
 
-		$command = $connection->createCommand($sql);
-		$result = $command->queryAll();
+        if(!empty($params['limit']) and $params['limit'] > 0)
+			$sql .= " limit {$params['limit']} ";
 
-		if(!empty($result))
-		{
-			foreach($result as $row)
-			{
-				$row['teaser'] = strip_tags($row['teaser']);
-				$row['tn_img'] = File::getTnImage($row['id'], 'hnn');
-				$data[] = $row;
-			}
-		}
+        $sql .= ';';
 
-		return $data;
-	}
+        $command = $connection->createCommand($sql);
+        $result = $command->queryAll();
+
+        if(!empty($result))
+        {
+            foreach($result as $row)
+            {
+                $row['teaser'] = strip_tags($row['teaser']);
+                $row['tn_img'] = File::getTnImage($row['id'], 'article');
+                $data[] = $row;
+            }
+        }
+
+        return $data;
+    }
 
 
+    public static function getArticleByCategoryGroup($category_group_id, $params=array())
+    {
+        $connection = Yii::app()->db;
+
+        $data = array();
+
+        $sql = "
+			select a.id, a.title, a.author, a.source, a.teaser, a.source_date, a.created,
+			    a.category_id, c.name as category
+			from article a
+			left join category c on a.category_id = c.id
+			where c.group_id = {$category_group_id}
+			order by a.created desc
+			";
+
+        if(!empty($params['limit']) and $params['limit'] > 0)
+            $sql .= " limit {$params['limit']} ";
+
+        $sql .= ';';
+
+        $command = $connection->createCommand($sql);
+        $result = $command->queryAll();
+
+        if(!empty($result))
+        {
+            foreach($result as $row)
+            {
+                $row['teaser'] = strip_tags($row['teaser']);
+                $row['tn_img'] = File::getTnImage($row['id'], 'article');
+                $data[] = $row;
+            }
+        }
+
+        return $data;
+    }
 
 
-
-
-
-
-	/**
+    /**
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()
@@ -119,14 +151,14 @@ class Article extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('source_bio, body, teaser', 'required'),
+			array('category_id, source_bio, body, teaser', 'required'),
 			array('uid, status, created', 'numerical', 'integerOnly'=>true),
-			array('type', 'length', 'max'=>32),
+			array('category_id', 'length', 'max'=>10),
 			array('title, author, source, source_url', 'length', 'max'=>255),
 			array('source_date', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, type, title, author, source, source_url, source_date, source_bio, body, teaser, uid, status, created', 'safe', 'on'=>'search'),
+			array('id, category_id, title, author, source, source_url, source_date, source_bio, body, teaser, uid, status, created', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -138,7 +170,6 @@ class Article extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'categories' => array(self::MANY_MANY, 'category', 'article_category_xref(id, id)')
 		);
 	}
 
@@ -149,7 +180,7 @@ class Article extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'type' => 'Type',
+			'category_id' => 'Category',
 			'title' => 'Title',
 			'author' => 'Author',
 			'source' => 'Source',
@@ -175,19 +206,19 @@ class Article extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('type',$this->type,true);
+//		$criteria->compare('id',$this->id,true);
+//		$criteria->compare('category_id',$this->category_id,true);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('author',$this->author,true);
 		$criteria->compare('source',$this->source,true);
-		$criteria->compare('source_url',$this->source_url,true);
-		$criteria->compare('source_date',$this->source_date,true);
-		$criteria->compare('source_bio',$this->source_bio,true);
+//		$criteria->compare('source_url',$this->source_url,true);
+//		$criteria->compare('source_date',$this->source_date,true);
+//		$criteria->compare('source_bio',$this->source_bio,true);
 		$criteria->compare('body',$this->body,true);
-		$criteria->compare('teaser',$this->teaser,true);
-		$criteria->compare('uid',$this->uid);
-		$criteria->compare('status',$this->status);
-		$criteria->compare('created',$this->created);
+//		$criteria->compare('teaser',$this->teaser,true);
+//		$criteria->compare('uid',$this->uid);
+//		$criteria->compare('status',$this->status);
+//		$criteria->compare('created',$this->created);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

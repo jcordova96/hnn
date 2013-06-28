@@ -8,7 +8,7 @@
 $this->pageTitle = Yii::app()->name;
 ?>
 
-<h1 class="invert"><?php echo $data['articles'][0]['category']; ?></h1>
+<h1 class="invert"><?php echo $data['category']; ?></h1>
 
 <?php foreach ($data['articles'] as $article_data): ?>
 	<ul class="thumbnails">
@@ -24,8 +24,16 @@ $this->pageTitle = Yii::app()->name;
 		</li>
 
 		<li class="span4">
-			<span
-				class="article-info">Originally published <?php echo date("m/d/Y", $article_data['created']); ?></span>
+
+            <?php if(isset($article_data['category'])): ?>
+                <a href='/article/category/<?php echo $article_data['category_id']; ?>'>
+                    <?php echo $article_data['category']; ?>
+                </a><br /><br />
+            <?php endif; ?>
+
+			<span class="article-info">
+                Originally published <?php echo date("m/d/Y", $article_data['created']); ?>
+            </span>
 
 			<h3>
 				<a href="/article/detail/<?php echo $article_data['id']; ?>">

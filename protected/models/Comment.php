@@ -1,21 +1,23 @@
 <?php
 
 /**
- * This is the model class for table "category".
+ * This is the model class for table "comment".
  *
- * The followings are the available columns in table 'category':
+ * The followings are the available columns in table 'comment':
  * @property string $id
+ * @property integer $nid
+ * @property integer $user_id
  * @property string $name
- * @property string $group_id
- * @property string $description
- * @property integer $weight
+ * @property string $subject
+ * @property string $comment
+ * @property integer $timestamp
  */
-class Category extends CActiveRecord
+class Comment extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Category the static model class
+	 * @return Comment the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -27,35 +29,14 @@ class Category extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'category';
+		return 'comment';
 	}
 
-    public static function getCategories()
+    public static function getDisqusIdentifier($id, $created, $type)
     {
-        $connection = Yii::app()->db;
-
-        $data = array();
-
-        $sql = "
-			select id, name
-			from category
-			where name != ''
-			order by name;
-			";
-
-        $command = $connection->createCommand($sql);
-        $result = $command->queryAll();
-
-        if(!empty($result))
-        {
-            foreach($result as $row)
-            {
-                $data[$row['id']] = $row['name'];
-            }
-        }
-
-        return $data;
+        return ($created > 1372383326) ? "{$type}/{$id}" : "node/{$id}";
     }
+
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -65,13 +46,13 @@ class Category extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('group_id, description', 'required'),
-			array('weight', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>255),
-			array('group_id', 'length', 'max'=>4),
+			array('comment', 'required'),
+			array('nid, user_id, timestamp', 'numerical', 'integerOnly'=>true),
+			array('name', 'length', 'max'=>60),
+			array('subject', 'length', 'max'=>64),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, group_id, description, weight', 'safe', 'on'=>'search'),
+			array('id, nid, user_id, name, subject, comment, timestamp', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -93,10 +74,12 @@ class Category extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'nid' => 'Nid',
+			'user_id' => 'User',
 			'name' => 'Name',
-			'group_id' => 'Group',
-			'description' => 'Description',
-			'weight' => 'Weight',
+			'subject' => 'Subject',
+			'comment' => 'Comment',
+			'timestamp' => 'Timestamp',
 		);
 	}
 
@@ -112,10 +95,12 @@ class Category extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
+		$criteria->compare('nid',$this->nid);
+		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('group_id',$this->group_id,true);
-		$criteria->compare('description',$this->description,true);
-		$criteria->compare('weight',$this->weight);
+		$criteria->compare('subject',$this->subject,true);
+		$criteria->compare('comment',$this->comment,true);
+		$criteria->compare('timestamp',$this->timestamp);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

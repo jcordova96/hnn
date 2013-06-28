@@ -22,18 +22,18 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'type'); ?>
-		<?php echo $form->textField($model,'type',array('size'=>32,'maxlength'=>32)); ?>
+		<?php echo $form->label($model,'author_id'); ?>
+		<?php echo $form->textField($model,'author_id',array('size'=>11,'maxlength'=>11)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'category_id'); ?>
+		<?php echo $form->textField($model,'category_id',array('size'=>10,'maxlength'=>10)); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->label($model,'title'); ?>
 		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>255)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'author'); ?>
-		<?php echo $form->textField($model,'author',array('size'=>60,'maxlength'=>255)); ?>
 	</div>
 
 	<div class="row">

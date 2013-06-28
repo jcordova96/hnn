@@ -1,21 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "category".
+ * This is the model class for table "user".
  *
- * The followings are the available columns in table 'category':
+ * The followings are the available columns in table 'user':
  * @property string $id
- * @property string $name
- * @property string $group_id
- * @property string $description
- * @property integer $weight
+ * @property string $pass
+ * @property string $mail
+ * @property string $first_name
+ * @property string $middle_name
+ * @property string $last_name
+ * @property integer $created
+ * @property integer $login
+ * @property integer $status
  */
-class Category extends CActiveRecord
+class User extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Category the static model class
+	 * @return User the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -27,35 +31,8 @@ class Category extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'category';
+		return 'user';
 	}
-
-    public static function getCategories()
-    {
-        $connection = Yii::app()->db;
-
-        $data = array();
-
-        $sql = "
-			select id, name
-			from category
-			where name != ''
-			order by name;
-			";
-
-        $command = $connection->createCommand($sql);
-        $result = $command->queryAll();
-
-        if(!empty($result))
-        {
-            foreach($result as $row)
-            {
-                $data[$row['id']] = $row['name'];
-            }
-        }
-
-        return $data;
-    }
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -65,13 +42,12 @@ class Category extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('group_id, description', 'required'),
-			array('weight', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>255),
-			array('group_id', 'length', 'max'=>4),
+			array('created, login, status', 'numerical', 'integerOnly'=>true),
+			array('pass, first_name, middle_name, last_name', 'length', 'max'=>32),
+			array('mail', 'length', 'max'=>64),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, group_id, description, weight', 'safe', 'on'=>'search'),
+			array('id, pass, mail, first_name, middle_name, last_name, created, login, status', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -93,10 +69,14 @@ class Category extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
-			'group_id' => 'Group',
-			'description' => 'Description',
-			'weight' => 'Weight',
+			'pass' => 'Pass',
+			'mail' => 'Mail',
+			'first_name' => 'First Name',
+			'middle_name' => 'Middle Name',
+			'last_name' => 'Last Name',
+			'created' => 'Created',
+			'login' => 'Login',
+			'status' => 'Status',
 		);
 	}
 
@@ -112,10 +92,14 @@ class Category extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('group_id',$this->group_id,true);
-		$criteria->compare('description',$this->description,true);
-		$criteria->compare('weight',$this->weight);
+		$criteria->compare('pass',$this->pass,true);
+		$criteria->compare('mail',$this->mail,true);
+		$criteria->compare('first_name',$this->first_name,true);
+		$criteria->compare('middle_name',$this->middle_name,true);
+		$criteria->compare('last_name',$this->last_name,true);
+		$criteria->compare('created',$this->created);
+		$criteria->compare('login',$this->login);
+		$criteria->compare('status',$this->status);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

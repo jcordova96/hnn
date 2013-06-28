@@ -1,6 +1,6 @@
 <?php
 
-class ArticleController extends Controller
+class BlogAuthorController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -28,7 +28,7 @@ class ArticleController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'detail', 'category', 'group'),
+				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -45,59 +45,7 @@ class ArticleController extends Controller
 		);
 	}
 
-	public function actionDetail($id)
-	{
-		$this->layout = '//layouts/column1';
-
-		$article = Article::model()->findByPk($id)->getAttributes();
-		$article['lead_text'] = '';
-//		$article['images'] = File::getImages($id, "hnn");
-
-        $result = Comment::model()->findAllByAttributes(array('nid' => $article['id']), array('order' => 'timestamp desc'));
-        $comments = array();
-        foreach($result as $row)
-            $comments[] = $row->getAttributes();
-
-//        echo print_r($comments, true);
-
-        $data = array('data' => array(
-			'article' => $article,
-            'legacy_comments' => $comments
-		));
-
-//		echo '<pre>'.print_r($article['images'], true).'</pre>';
-
-		$this->render('detail', $data);
-	}
-
-
-	public function actionCategory($id)
-	{
-		$this->layout = '//layouts/column1';
-
-		$data = array('data' => array(
-			'articles' => Article::getArticleByCategory($id, array('limit' => 20)),
-            'category' => Category::model()->findByPk($id)->getAttribute('name')
-		));
-
-		$this->render('category', $data);
-	}
-
-
-    public function actionGroup($id)
-    {
-        $this->layout = '//layouts/column1';
-
-        $data = array('data' => array(
-            'articles' => Article::getArticleByCategoryGroup($id, array('limit' => 20)),
-            'category' => CategoryGroup::model()->findByPk($id)->getAttribute('name')
-        ));
-
-        $this->render('category', $data);
-    }
-
-
-    /**
+	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
@@ -114,19 +62,16 @@ class ArticleController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Article;
+		$model=new BlogAuthor;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Article']))
+		if(isset($_POST['BlogAuthor']))
 		{
-			$model->attributes=$_POST['Article'];
+			$model->attributes=$_POST['BlogAuthor'];
 			if($model->save())
-            {
-                File::saveUploadedImages($model);
 				$this->redirect(array('view','id'=>$model->id));
-            }
 		}
 
 		$this->render('create',array(
@@ -146,17 +91,11 @@ class ArticleController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Article']))
+		if(isset($_POST['BlogAuthor']))
 		{
-			$model->attributes=$_POST['Article'];
+			$model->attributes=$_POST['BlogAuthor'];
 			if($model->save())
-            {
-                File::saveUploadedImages($model);
-                if(!empty($_POST['delete_files']))
-                    File::deleteFilesByPath($_POST['delete_files']);
-
-//				$this->redirect(array('view','id'=>$model->id));
-            }
+				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('update',array(
@@ -183,22 +122,21 @@ class ArticleController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Article');
+		$dataProvider=new CActiveDataProvider('BlogAuthor');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
 	}
-
 
 	/**
 	 * Manages all models.
 	 */
 	public function actionAdmin()
 	{
-		$model=new Article('search');
+		$model=new BlogAuthor('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Article']))
-			$model->attributes=$_GET['Article'];
+		if(isset($_GET['BlogAuthor']))
+			$model->attributes=$_GET['BlogAuthor'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -209,12 +147,12 @@ class ArticleController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Article the loaded model
+	 * @return BlogAuthor the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Article::model()->findByPk($id);
+		$model=BlogAuthor::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -222,11 +160,11 @@ class ArticleController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Article $model the model to be validated
+	 * @param BlogAuthor $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='article-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='blog-author-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
