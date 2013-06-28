@@ -7,7 +7,9 @@ module.exports = function(grunt) {
                 'assets/js/ng/**/*.html',
                 'assets/js/app/**/*.js',
                 'assets/js/vendor/**/*.js',
-                '!**/node_modules/**/*.js'
+                '!**/node_modules/**/*.js',
+                'css/hnn/**/*.css',
+                'js/**/*.js'
             ],
             tasks: ['dev']
         },
