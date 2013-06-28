@@ -113,8 +113,8 @@
                     </ul>
                 </li>
             </ul>
-            <form class="navbar-search pull-right" action="">
-                <input type="text" class="search-query span2" placeholder="Search">
+            <form class="navbar-search pull-right" action="/search" method="get">
+                <input name="q" type="text" class="search-query span2" placeholder="Search">
             </form>
         </div>
         <!-- /.nav-collapse -->
