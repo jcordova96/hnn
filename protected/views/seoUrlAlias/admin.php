@@ -1,15 +1,15 @@
 <?php
-/* @var $this BlogController */
-/* @var $model Blog */
+/* @var $this SeoUrlAliasController */
+/* @var $model SeoUrlAlias */
 
 $this->breadcrumbs=array(
-	'Blogs'=>array('index'),
+	'Seo Url Aliases'=>array('index'),
 	'Manage',
 );
 
 $this->menu=array(
-	array('label'=>'List Blog', 'url'=>array('index')),
-	array('label'=>'Create Blog', 'url'=>array('create')),
+	array('label'=>'List SeoUrlAlias', 'url'=>array('index')),
+	array('label'=>'Create SeoUrlAlias', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -18,7 +18,7 @@ $('.search-button').click(function(){
 	return false;
 });
 $('.search-form form').submit(function(){
-	$('#blog-grid').yiiGridView('update', {
+	$('#seo-url-alias-grid').yiiGridView('update', {
 		data: $(this).serialize()
 	});
 	return false;
@@ -26,7 +26,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Blogs</h1>
+<h1>Manage Seo Url Aliases</h1>
 
 <p>
 You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
@@ -41,22 +41,13 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'blog-grid',
+	'id'=>'seo-url-alias-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
-		'uid',
-		'author_id',
-		'category_id',
-		'title',
-        /*
-        'source',
-        'body',
-        'teaser',
-        'status',
-        'created',
-        */
+		'alias',
+		'path',
 		array(
 			'class'=>'CButtonColumn',
 		),

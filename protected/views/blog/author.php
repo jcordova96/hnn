@@ -15,7 +15,7 @@ $this->pageTitle = Yii::app()->name;
 		<li class="span2">
 			<?php if (!empty($blog_data['tn_img'])): ?>
 				<div class="thumbnail">
-					<a href="/blog/detail/<?php echo $blog_data['id']; ?>">
+					<a href="/blog/<?php echo $blog_data['id']; ?>">
 						<img src="<?php echo '/'.$blog_data['tn_img']; ?>"
 							 alt="">
 					</a>
@@ -28,7 +28,7 @@ $this->pageTitle = Yii::app()->name;
 				class="article-info">Originally published <?php echo date("m/d/Y", $blog_data['created']); ?></span>
 
 			<h3>
-				<a href="/blog/detail/<?php echo $blog_data['id']; ?>">
+				<a href="/blog/<?php echo $blog_data['id']; ?>">
 					<?php echo $blog_data['title']; ?>
 				</a>
 			</h3>

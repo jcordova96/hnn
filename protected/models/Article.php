@@ -48,8 +48,7 @@ class Article extends CActiveRecord
 			select a.id, a.title, a.author, a.source, a.teaser, a.source_date, a.created,
 				c.name as category
 			from article a
-			left join article_category_xref acxr on a.id = acxr.article_id
-			left join category c on c.id = acxr.category_id
+			left join category c on c.id = a.category_id
 			order by a.created desc
 			limit {$num};
 			";
@@ -59,12 +58,28 @@ class Article extends CActiveRecord
 
         if(!empty($result))
         {
+//            $weeks = array();
+//            $end = strtotime('now');
+//            $one_week = 7 * 24 * 3600;
+//            while($end > $result[(count($result)-1)]['created'])
+//            {
+//                $end -= $one_week;
+//                $weeks[] = $end;
+//            }
+
             foreach($result as $row)
             {
                 $row['teaser'] = strip_tags($row['teaser']);
                 $row['tn_img'] = File::getTnImage($row['id'], 'article');
                 $data[$row['category']][] = $row;
             }
+        }
+
+        if(isset($data['Unpublished Articles']))
+        {
+            $unpublished = $data['Unpublished Articles'];
+            unset($data['Unpublished Articles']);
+            $data['Unpublished Articles'] = $unpublished;
         }
 
         return $data;
@@ -151,7 +166,7 @@ class Article extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('category_id, source_bio, body, teaser', 'required'),
+			array('category_id, body, teaser', 'required'),
 			array('uid, status, created', 'numerical', 'integerOnly'=>true),
 			array('category_id', 'length', 'max'=>10),
 			array('title, author, source, source_url', 'length', 'max'=>255),

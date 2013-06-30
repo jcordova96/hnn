@@ -51,8 +51,8 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'author',
 		'source',
 		'source_url',
-		/*
 		'source_date',
+		/*
 		'source_bio',
 		'body',
 		'teaser',

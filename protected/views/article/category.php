@@ -15,7 +15,7 @@ $this->pageTitle = Yii::app()->name;
 		<li class="span2">
 			<?php if (!empty($article_data['tn_img'])): ?>
 				<div class="thumbnail">
-					<a href="/article/detail/<?php echo $article_data['id']; ?>">
+					<a href="/article/<?php echo $article_data['id']; ?>">
 						<img src="<?php echo '/'.$article_data['tn_img']; ?>"
 							 alt="">
 					</a>
@@ -36,7 +36,7 @@ $this->pageTitle = Yii::app()->name;
             </span>
 
 			<h3>
-				<a href="/article/detail/<?php echo $article_data['id']; ?>">
+				<a href="/article/<?php echo $article_data['id']; ?>">
 					<?php echo $article_data['title']; ?>
 				</a>
 			</h3>
