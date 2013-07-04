@@ -43,11 +43,11 @@ class User extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('created, login, status', 'numerical', 'integerOnly'=>true),
-			array('pass, first_name, middle_name, last_name', 'length', 'max'=>32),
+			array('first_name, middle_name, last_name', 'length', 'max'=>32),
 			array('mail', 'length', 'max'=>64),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, pass, mail, first_name, middle_name, last_name, created, login, status', 'safe', 'on'=>'search'),
+			array('id, mail, first_name, middle_name, last_name, created, login, status', 'safe', 'on'=>'search'),
 		);
 	}
 
