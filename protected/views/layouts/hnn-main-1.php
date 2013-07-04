@@ -42,7 +42,7 @@
 
         <!-- .span3.logo -->
         <div class="span6 logo">
-            <a href="/"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/logo-gr.png" alt="Logo"/></a>
+            <a href="/"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/hnn/hnn-logo-new.gif" alt="Logo"/></a>
         </div>
         <!-- /.span3.logo -->
 

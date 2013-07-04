@@ -1,25 +1,19 @@
 <?php
 
 /**
- * This is the model class for table "user".
+ * This is the model class for table "seo_url_alias".
  *
- * The followings are the available columns in table 'user':
+ * The followings are the available columns in table 'seo_url_alias':
  * @property string $id
- * @property string $pass
- * @property string $mail
- * @property string $first_name
- * @property string $middle_name
- * @property string $last_name
- * @property integer $created
- * @property integer $login
- * @property integer $status
+ * @property string $alias
+ * @property string $path
  */
-class User extends CActiveRecord
+class SeoUrlAlias extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return User the static model class
+	 * @return SeoUrlAlias the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -31,7 +25,7 @@ class User extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'user';
+		return 'seo_url_alias';
 	}
 
 	/**
@@ -42,12 +36,10 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('created, login, status', 'numerical', 'integerOnly'=>true),
-			array('first_name, middle_name, last_name', 'length', 'max'=>32),
-			array('mail', 'length', 'max'=>64),
+			array('alias, path', 'length', 'max'=>128),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, mail, first_name, middle_name, last_name, created, login, status', 'safe', 'on'=>'search'),
+			array('id, alias, path', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,14 +61,8 @@ class User extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'pass' => 'Pass',
-			'mail' => 'Mail',
-			'first_name' => 'First Name',
-			'middle_name' => 'Middle Name',
-			'last_name' => 'Last Name',
-			'created' => 'Created',
-			'login' => 'Login',
-			'status' => 'Status',
+			'alias' => 'Alias',
+			'path' => 'Path',
 		);
 	}
 
@@ -92,14 +78,8 @@ class User extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('pass',$this->pass,true);
-		$criteria->compare('mail',$this->mail,true);
-		$criteria->compare('first_name',$this->first_name,true);
-		$criteria->compare('middle_name',$this->middle_name,true);
-		$criteria->compare('last_name',$this->last_name,true);
-		$criteria->compare('created',$this->created);
-		$criteria->compare('login',$this->login);
-		$criteria->compare('status',$this->status);
+		$criteria->compare('alias',$this->alias,true);
+		$criteria->compare('path',$this->path,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -17,9 +17,10 @@ class DbadapterCommand extends CConsoleCommand
 //		$this->processBlogs();
 //		$this->processTerms();
 //		$this->processFiles();
-		$this->processComments();
+//		$this->processComments();
 
-//		$this->processSeo();
+		$this->processSeo();
+//		$this->processSeoSitemap();
 //		$this->processAds();
 //		$this->processStats();
 
@@ -315,18 +316,119 @@ class DbadapterCommand extends CConsoleCommand
     }
 
 
+    private function processSeoSitemap()
+	{
+        $sql = "
+            DROP TABLE IF EXISTS hnn.seo_sitemap;
+            CREATE TABLE hnn.seo_sitemap (
+              id int(10) unsigned NOT NULL AUTO_INCREMENT,
+              url varchar(128) NOT NULL DEFAULT '',
+              PRIMARY KEY (id)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+        ";
+        $this->executeQuery($sql);
+
+        $sql = "
+            INSERT INTO hnn.seo_sitemap (id, url)
+                SELECT '', concat('http://hnn.us/article/', id)
+                FROM hnn.article
+            ";
+        $this->executeQuery($sql);
+
+        $sql = "
+            INSERT INTO hnn.seo_sitemap (id, url)
+                SELECT '', concat('http://hnn.us/blog/', id)
+                FROM hnn.blog
+            ";
+        $this->executeQuery($sql);
+
+        $sql = "
+            INSERT INTO hnn.seo_sitemap (id, url)
+                SELECT '', concat('http://hnn.us/category/', id)
+                FROM hnn.category
+            ";
+        $this->executeQuery($sql);
+
+        $sql = "
+            INSERT INTO hnn.seo_sitemap (id, url)
+                SELECT '', concat('http://hnn.us/group/', id)
+                FROM hnn.category_group
+            ";
+        $this->executeQuery($sql);
+
+    }
+
     private function processSeo()
 	{
-		$connection = Yii::app()->db;
+        $sql = "
+            DROP TABLE IF EXISTS hnn.seo;
+            CREATE TABLE hnn.seo (
+              id int(10) unsigned NOT NULL AUTO_INCREMENT,
+              type varchar(16) NOT NULL DEFAULT '',
+              nid int(10) unsigned NOT NULL DEFAULT '0',
+              url varchar(255) NOT NULL DEFAULT '',
+              title varchar(255) NOT NULL DEFAULT '',
+              description longtext,
+              keywords longtext,
+              robots varchar(50) NOT NULL DEFAULT '',
+              PRIMARY KEY (id),
+              KEY nid (nid)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-		$sql = "
-			select nid, caption
-			from hnn_search_node_links
-			limit 5
-			offset 0;";
+            DROP TABLE IF EXISTS hnn.seo_url_alias;
+            CREATE TABLE hnn.seo_url_alias (
+              id int(10) unsigned NOT NULL AUTO_INCREMENT,
+              nid int(10) unsigned NOT NULL DEFAULT '0',
+              alias varchar(128) NOT NULL DEFAULT '',
+              path varchar(128) NOT NULL DEFAULT '',
+              PRIMARY KEY (id),
+              KEY alias (alias)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+        ";
+        $this->executeQuery($sql);
 
-		$command = $connection->createCommand($sql);
-		$rows = $command->queryAll();
+        $sql = "
+            INSERT INTO hnn.seo (id, type, nid, keywords, title)
+                SELECT '', n.type, snl.nid, snl.caption, n.title
+                FROM hnn_edit.hnn_search_node_links snl
+                LEFT JOIN hnn_edit.hnn_node n on n.nid = snl.nid
+                group by snl.nid
+                ORDER BY snl.nid
+            ";
+        $result = $this->executeQuery($sql);
+        echo "result: {$result}\n";
+
+        $sql = "
+            INSERT INTO hnn.seo_url_alias (id, alias, path, nid)
+                SELECT '', dst, src, REPLACE(src, 'node/', '') as nid
+                FROM hnn_edit.hnn_url_alias
+                where src like 'node/%'
+                ORDER BY src
+            ";
+        $result = $this->executeQuery($sql);
+
+        $sql = "
+            UPDATE seo_url_alias as sua, article as a
+            SET
+            sua.path = replace(sua.path, 'node', 'article')
+            where sua.nid = a.id
+            ";
+        $result = $this->executeQuery($sql);
+
+        $sql = "
+            UPDATE seo_url_alias as sua, blog as b
+            SET
+            sua.path = replace(sua.path, 'node', 'blog')
+            where sua.nid = b.id
+            ";
+        $result = $this->executeQuery($sql);
+
+        $sql = "update seo set type = 'article' where type = 'hnn'";
+        $this->executeQuery($sql);
+        $sql = "update seo set type = 'blog' where type = 'hnn_b_type'";
+        $this->executeQuery($sql);
+
+        echo "result: {$result}\n";
 	}
 
 

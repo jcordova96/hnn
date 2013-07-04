@@ -45,7 +45,7 @@ class ArticleController extends Controller
 		);
 	}
 
-	public function actionDetail($id)
+	public function actionView($id)
 	{
 		$this->layout = '//layouts/column1';
 
@@ -101,7 +101,7 @@ class ArticleController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
+	public function actionView2($id)
 	{
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),

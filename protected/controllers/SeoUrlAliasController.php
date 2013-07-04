@@ -1,6 +1,6 @@
 <?php
 
-class BlogController extends Controller
+class SeoUrlAliasController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -28,7 +28,7 @@ class BlogController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detail','author'),
+				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -45,42 +45,11 @@ class BlogController extends Controller
 		);
 	}
 
-
-	public function actionView($id)
-	{
-		$this->layout = '//layouts/column1';
-
-		$blog = Blog::model()->findByPk($id)->getAttributes();
-		$blog['lead_text'] = '';
-//		$blog['images'] = Blog::getBlogImages($id);
-
-		$data = array('data' => array(
-			'blog' => $blog
-		));
-
-//		echo '<pre>'.print_r($blog['images'], true).'</pre>';
-
-		$this->render('detail', $data);
-	}
-
-
-	public function actionAuthor($id)
-	{
-		$this->layout = '//layouts/column1';
-
-		$data = array('data' => array(
-			'blog_entries' => Blog::getBlogByAuthor($id)
-		));
-
-		$this->render('author', $data);
-	}
-
-
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView2($id)
+	public function actionView($id)
 	{
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
@@ -93,14 +62,14 @@ class BlogController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Blog;
+		$model=new SeoUrlAlias;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Blog']))
+		if(isset($_POST['SeoUrlAlias']))
 		{
-			$model->attributes=$_POST['Blog'];
+			$model->attributes=$_POST['SeoUrlAlias'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -122,9 +91,9 @@ class BlogController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Blog']))
+		if(isset($_POST['SeoUrlAlias']))
 		{
-			$model->attributes=$_POST['Blog'];
+			$model->attributes=$_POST['SeoUrlAlias'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -153,7 +122,7 @@ class BlogController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Blog');
+		$dataProvider=new CActiveDataProvider('SeoUrlAlias');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -164,10 +133,10 @@ class BlogController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Blog('search');
+		$model=new SeoUrlAlias('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Blog']))
-			$model->attributes=$_GET['Blog'];
+		if(isset($_GET['SeoUrlAlias']))
+			$model->attributes=$_GET['SeoUrlAlias'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -178,12 +147,12 @@ class BlogController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Blog the loaded model
+	 * @return SeoUrlAlias the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Blog::model()->findByPk($id);
+		$model=SeoUrlAlias::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -191,11 +160,11 @@ class BlogController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Blog $model the model to be validated
+	 * @param SeoUrlAlias $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='blog-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='seo-url-alias-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

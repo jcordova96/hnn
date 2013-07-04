@@ -32,7 +32,7 @@ class SiteController extends Controller
 		$this->layout = '//layouts/column1';
 
 		$data = array('data' => array(
-			'recent_articles' => Article::getMostRecentArticles(150)
+			'recent_articles' => Article::getMostRecentArticles(15)
 		));
 
 		$this->render('index', $data);
@@ -41,10 +41,77 @@ class SiteController extends Controller
 	/**
 	 * This is the action to handle external exceptions.
 	 */
+	public function actionMoved()
+	{
+        header("HTTP/1.1 301 Moved Permanently");
+        header("Location: http://www.New-Website.com");
+
+
+    }
+
+    private function checkLegacyUrls()
+    {
+        $request_uri = substr($_SERVER['REQUEST_URI'], 1);
+
+        $matches = array();
+        preg_match('/node\/([0-9]+)/', $request_uri, $matches);
+        if(!empty($matches))
+        {
+            $id = $matches[1];
+            $article = Article::model()->findbyPk($id);
+            if(!empty($article) and $article->getAttribute('created') < strtotime('7/1/2013'))
+                $this->redirect301("article/{$id}");
+
+            $blog = Blog::model()->findbyPk($id);
+            if(!empty($blog) and $blog->getAttribute('created') < strtotime('7/1/2013'))
+                $this->redirect301("blog/{$id}");
+        }
+
+        $matches = array();
+        preg_match('/articles\/([0-9]+)\.html/', $request_uri, $matches);
+        if(!empty($matches))
+        {
+            $id = $matches[1];
+            $article = Article::model()->findbyPk($id);
+            if(!empty($article))
+                $this->redirect301("article/{$id}");
+        }
+
+        $matches = array();
+        preg_match('/blogs\/entries\/([0-9]+)\.html/', $request_uri, $matches);
+        if(!empty($matches))
+        {
+            $id = $matches[1];
+            $article = Blog::model()->findbyPk($id);
+            if(!empty($article))
+                $this->redirect301("blog/{$id}");
+        }
+
+        $result = SeoUrlAlias::model()->findByAttributes(array('alias' => $request_uri));
+        if(!empty($result))
+        {
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location: http://{$_SERVER['HTTP_HOST']}/{$result->getAttribute('path')}");
+        }
+    }
+    private function redirect301($path)
+    {
+        header("HTTP/1.1 301 Moved Permanently");
+        header("Location: http://{$_SERVER['HTTP_HOST']}/{$path}");
+    }
+
+	/**
+	 * This is the action to handle external exceptions.
+	 */
 	public function actionError()
 	{
 		if($error=Yii::app()->errorHandler->error)
 		{
+            if($error['code'] == 404)
+            {
+                $this->checkLegacyUrls();
+            }
+
 			if(Yii::app()->request->isAjaxRequest)
 				echo $error['message'];
 			else
