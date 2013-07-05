@@ -47,7 +47,7 @@ class ArticleController extends Controller
 
 	public function actionView($id)
 	{
-		$this->layout = '//layouts/column1';
+		$this->layout = '//layouts/hnn-3col';
 
 		$article = Article::model()->findByPk($id)->getAttributes();
 		$article['lead_text'] = '';
@@ -73,7 +73,7 @@ class ArticleController extends Controller
 
 	public function actionCategory($id)
 	{
-		$this->layout = '//layouts/column1';
+		$this->layout = '//layouts/hnn-3col';
 
 		$data = array('data' => array(
 			'articles' => Article::getArticleByCategory($id, array('limit' => 20)),
@@ -86,7 +86,7 @@ class ArticleController extends Controller
 
     public function actionGroup($id)
     {
-        $this->layout = '//layouts/column1';
+        $this->layout = '//layouts/hnn-3col';
 
         $data = array('data' => array(
             'articles' => Article::getArticleByCategoryGroup($id, array('limit' => 20)),

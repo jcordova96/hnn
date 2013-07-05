@@ -29,7 +29,7 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$this->layout = '//layouts/column1';
+		$this->layout = '//layouts/hnn-3col';
 
 		$data = array('data' => array(
 			'recent_articles' => Article::getMostRecentArticles(15)
@@ -124,7 +124,7 @@ class SiteController extends Controller
 	 */
 	public function actionContact()
 	{
-		$this->layout = '//layouts/column1';
+		$this->layout = '//layouts/hnn-3col';
 
 		$model=new ContactForm;
 		if(isset($_POST['ContactForm']))

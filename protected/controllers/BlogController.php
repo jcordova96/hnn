@@ -48,7 +48,7 @@ class BlogController extends Controller
 
 	public function actionView($id)
 	{
-		$this->layout = '//layouts/column1';
+		$this->layout = '//layouts/hnn-2col';
 
 		$blog = Blog::model()->findByPk($id)->getAttributes();
 		$blog['lead_text'] = '';
@@ -66,7 +66,7 @@ class BlogController extends Controller
 
 	public function actionAuthor($id)
 	{
-		$this->layout = '//layouts/column1';
+		$this->layout = '//layouts/hnn-3col';
 
 		$data = array('data' => array(
 			'blog_entries' => Blog::getBlogByAuthor($id)

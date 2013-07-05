@@ -7244,12 +7244,12 @@ div#blog-nav-sidebar, div#news-widget
 }
 
 .top-gradient{
-    background-image: -o-linear-gradient(bottom, rgb(60,92,108) 2%, rgb(255,255,255) 5%);
-    background-image: -moz-linear-gradient(bottom, rgb(60,92,108) 2%, rgb(255,255,255) 5%);
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, rgb(60,92,108)), color-stop(0.5, rgb(255,255,255)));
-    background-image: -webkit-linear-gradient(top, rgb(60,92,108) 2%, rgb(255,255,255) 5%);
-    background-image: -ms-linear-gradient(bottom, rgb(60,92,108) 2%, rgb(255,255,255) 5%);
-    background-image: linear-gradient(bottom, rgb(60,92,108) 2%, rgb(255,255,255) 5%);
+    background-image: -o-linear-gradient(bottom, rgb(60,92,108) 180px, rgb(255,255,255) 8px);
+    background-image: -moz-linear-gradient(bottom, rgb(60,92,108) 180px, rgb(255,255,255) 8px);
+    /*background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, rgb(60,92,108)), color-stop(0.5, rgb(255,255,255)));*/
+    background-image: -webkit-linear-gradient(top, rgb(60,92,108) 180px, rgb(255,255,255) 8px);
+    background-image: -ms-linear-gradient(bottom, rgb(60,92,108) 180px, rgb(255,255,255) 8px);
+    background-image: linear-gradient(bottom, rgb(60,92,108) 180px, rgb(255,255,255) 8px);
 }
 @media only screen and (min-width: 980px)  and (max-width: 1199px){
 
