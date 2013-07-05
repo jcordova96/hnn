@@ -34,7 +34,7 @@
 <body>
 
 <!-- .container -->
-<section class="container">
+<section class="container top-gradient">
 
 <!-- #header .row -->
 <header id="header">

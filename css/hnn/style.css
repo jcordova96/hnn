@@ -153,12 +153,6 @@ a:hover {
     /*padding: 35px 0;*/
     padding: 20px 0;
     margin-bottom: 0 !important;
-    background-image: -o-linear-gradient(bottom, rgb(254,133,107) 24%, rgb(35,171,17) 62%);
-    background-image: -moz-linear-gradient(bottom, rgb(254,133,107) 24%, rgb(35,171,17) 62%);
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.24, rgb(254,133,107)), color-stop(0.62, rgb(35,171,17)));
-    background-image: -webkit-linear-gradient(bottom, rgb(254,133,107) 24%, rgb(35,171,17) 62%);
-    background-image: -ms-linear-gradient(bottom, rgb(254,133,107) 24%, rgb(35,171,17) 62%);
-    background-image: linear-gradient(bottom, rgb(254,133,107) 24%, rgb(35,171,17) 62%);
 }
 
 /* logo */
@@ -1449,4 +1443,13 @@ div#news-widget.tabbable div.tab-content
 div#blog-nav-sidebar, div#news-widget
 {
     text-align: left;
+}
+
+.top-gradient{
+    background-image: -o-linear-gradient(bottom, rgb(60,92,108) 2%, rgb(255,255,255) 5%);
+    background-image: -moz-linear-gradient(bottom, rgb(60,92,108) 2%, rgb(255,255,255) 5%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, rgb(60,92,108)), color-stop(0.5, rgb(255,255,255)));
+    background-image: -webkit-linear-gradient(top, rgb(60,92,108) 2%, rgb(255,255,255) 5%);
+    background-image: -ms-linear-gradient(bottom, rgb(60,92,108) 2%, rgb(255,255,255) 5%);
+    background-image: linear-gradient(bottom, rgb(60,92,108) 2%, rgb(255,255,255) 5%);
 }
