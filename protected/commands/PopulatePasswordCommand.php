@@ -12,6 +12,7 @@ class PopulatePasswordCommand extends CConsoleCommand
     public function getHelp()
     {
         echo "Run this job without args to set a password to user objects that do not have a password.";
+        echo "\r\n\r\n";
     }
 
     public function run($args)
@@ -26,11 +27,11 @@ class PopulatePasswordCommand extends CConsoleCommand
 
         $aPasswordFileData = "";
 
-        $criteria = new CDbCriteria;
-        $criteria->condition = 'id > :idMin AND id < :idMax';
-        $criteria->params = array(':idMin'=>12000,'idMax'=>14001);
+//        $criteria = new CDbCriteria;
+//        $criteria->condition = 'id > :idMin AND id < :idMax';
+//        $criteria->params = array(':idMin'=>12000,'idMax'=>14001);
 
-        $users = User::model()->findAll($criteria);
+        $users = User::model()->findAll();
 
         echo "Writing password help file ... \r\n\r\n";
 
