@@ -37,7 +37,7 @@ class UserController extends Controller
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions' => array('admin', 'delete'),
-                'users'=>array('admin'),
+                'users'=>array('admin','editor@hnn.us'),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
@@ -105,6 +105,20 @@ class UserController extends Controller
                     $aRole[] = $sRoleName;
 
                 $model->assignRoles($aRole);
+            }
+
+            //categories admin
+            if(isset($_POST['categories']))
+            {
+                $ucx = new UserCategoryXref();
+                $ucx->deleteAllForUser($model->id);
+
+                $aCategoryInfo = $_POST['categories'];
+
+                foreach($aCategoryInfo as $category_id => $sValue)
+                    $categories[] = $category_id;
+
+                $ucx->assignCategories($model->id,$categories);
             }
 
             if (!empty($_POST['User']['newPassword']))

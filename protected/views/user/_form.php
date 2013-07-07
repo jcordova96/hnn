@@ -8,10 +8,18 @@ if ($this->action->id == 'update')
     $auth = Yii::app()->authManager;
     $aRole = $auth->getRoles();
     $aUserRoleInfo = $auth->getAuthAssignMents($model->mail);
+
     $aUserRole = array();
 
     foreach ($aUserRoleInfo as $sUserRole => $oCAuthItem)
         $aUserRole[] = $sUserRole;
+
+    $aUserCategory = array();
+
+    foreach ($model->categories as $category)
+        $aUserCategory[] = $category->name;
+
+    $aCategoryInfo = Category::getCategories();
 }
 ?>
 
@@ -108,20 +116,45 @@ if ($this->action->id == 'update')
             <?php echo $model->status; ?>
         </div>
 
-        <?php if (!empty($aRole)): ?>
+        <?php if (!empty($aRole)): $row_num = 0; ?>
 
             <div class="row">
                 <h2>User Role Assignment </h2>
-
-                <?php foreach ($aRole as $sRoleName => $oCAuthItem): ?>
-
-                    <?php echo CHtml::label($sRoleName, 'roles[' . $sRoleName . ']'); ?>
-                    <?php echo CHtml::checkBox('roles[' . $sRoleName . ']', (in_array($sRoleName, $aUserRole))); /* See if current role in user role array to see if should be checked */ ?>
-
-                <?php endforeach; ?>
-
+                <table>
+                    <tr>
+                        <?php foreach ($aRole as $sRoleName => $oCAuthItem): ?>
+                            <td>
+                                <?php echo CHtml::label($sRoleName, 'roles[' . $sRoleName . ']'); ?>
+                                <?php echo CHtml::checkBox('roles[' . $sRoleName . ']', (in_array($sRoleName, $aUserRole))); /* See if current role in user role array to see if should be checked */ ?>
+                            </td>
+                            <?php $row_num++;
+                            echo (($row_num % 3) == 0) ? "</tr><tr>" : ""; ?>
+                        <?php endforeach; ?>
+                    </tr>
+                </table>
             </div>
 
+        <?php endif; ?>
+
+        <?php if (!empty($aCategoryInfo)): $row_num = 0; ?>
+
+            <div class="row">
+                <h2>User Category Assignment </h2>
+                <table>
+                    <tr>
+                        <?php foreach ($aCategoryInfo as $category_id => $category_name): ?>
+                            <td>
+                                <?php echo CHtml::label($category_name, 'categories[' . $category_id . ']'); ?>
+                                <?php echo CHtml::checkBox('categories[' . $category_id . ']', (in_array($category_name, $aUserCategory))); /* See if current category in user category array to see if should be checked */ ?>
+                            </td>
+                            <?php $row_num++;
+                            echo (($row_num % 3) == 0) ? "</tr><tr>" : ""; ?>
+
+                        <?php endforeach; ?>
+                    </tr>
+                </table>
+            </div>
+            
         <?php endif; ?>
 
     <?php endif; ?>

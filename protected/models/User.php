@@ -61,7 +61,10 @@ class User extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array();
+        return array(
+            'categories'=>array(self::MANY_MANY, 'category',
+                'user_category_xref(user_id, category_id)'),
+        );
     }
 
     /**
