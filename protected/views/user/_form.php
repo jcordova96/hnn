@@ -10,16 +10,19 @@ if ($this->action->id == 'update')
     $aUserRoleInfo = $auth->getAuthAssignMents($model->mail);
 
     $aUserRole = array();
-
     foreach ($aUserRoleInfo as $sUserRole => $oCAuthItem)
         $aUserRole[] = $sUserRole;
 
     $aUserCategory = array();
-
     foreach ($model->categories as $category)
         $aUserCategory[] = $category->name;
 
+    $aUserBlogAuthor = array();
+    foreach ($model->blog_authors as $blog_author)
+        $aUserBlogAuthor[] = $blog_author->author;
+
     $aCategoryInfo = Category::getCategories();
+    $aBlogAuthorInfo = BlogAuthor::getAuthors();
 }
 ?>
 
@@ -129,6 +132,27 @@ if ($this->action->id == 'update')
                             </td>
                             <?php $row_num++;
                             echo (($row_num % 3) == 0) ? "</tr><tr>" : ""; ?>
+                        <?php endforeach; ?>
+                    </tr>
+                </table>
+            </div>
+
+        <?php endif; ?>
+
+        <?php if (($auth->isAssigned('blog_author',$model->mail)) && (!empty($aBlogAuthorInfo))): $row_num = 0; ?>
+
+            <div class="row">
+                <h2>Blog Assignment</h2>
+                <table>
+                    <tr>
+                        <?php foreach ($aBlogAuthorInfo as $blog_author_id => $blog_author_name): ?>
+                            <td>
+                                <?php echo CHtml::label($blog_author_name, 'blog_authors[' . $blog_author_id . ']'); ?>
+                                <?php echo CHtml::checkBox('blog_authors[' . $blog_author_id . ']', (in_array($blog_author_name, $aUserBlogAuthor))); /* See if current blog author in user category array to see if should be checked */ ?>
+                            </td>
+                            <?php $row_num++;
+                            echo (($row_num % 3) == 0) ? "</tr><tr>" : ""; ?>
+
                         <?php endforeach; ?>
                     </tr>
                 </table>

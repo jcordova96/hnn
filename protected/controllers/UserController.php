@@ -117,6 +117,20 @@ class UserController extends Controller
                 $ucx->assignCategories($model->id,$categories);
             }
 
+            //blog author admin
+            if(isset($_POST['blog_authors']))
+            {
+                $ubax = new UserBlogAuthorXref();
+                $ubax->deleteAllForUser($model->id);
+
+                $aBlogAuthorInfo = $_POST['blog_authors'];
+
+                foreach($aBlogAuthorInfo as $blog_author_id => $sValue)
+                    $blog_author_ids[] = $blog_author_id;
+
+                $ubax->assignBlogAuthors($model->id,$blog_author_ids);
+            }
+
             if (!empty($_POST['User']['newPassword']))
             {
                 $model->pass = crypt($_POST['User']['newPassword']);

@@ -64,6 +64,8 @@ class User extends CActiveRecord
         return array(
             'categories'=>array(self::MANY_MANY, 'category',
                 'user_category_xref(user_id, category_id)'),
+            'blog_authors'=>array(self::MANY_MANY, 'BlogAuthor',
+                'user_blog_author_xref(user_id, blog_author_id)'),
         );
     }
 
