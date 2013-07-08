@@ -154,7 +154,7 @@ if ($this->action->id == 'update')
                     </tr>
                 </table>
             </div>
-            
+
         <?php endif; ?>
 
     <?php endif; ?>
