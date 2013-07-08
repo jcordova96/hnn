@@ -14,12 +14,12 @@ class DbadapterCommand extends CConsoleCommand
 	{
 //		$this->processUsers();
 //		$this->processArticles();
-//		$this->processBlogs();
+		$this->processBlogs();
 //		$this->processTerms();
 //		$this->processFiles();
 //		$this->processComments();
 
-		$this->processSeo();
+//		$this->processSeo();
 //		$this->processSeoSitemap();
 //		$this->processAds();
 //		$this->processStats();
@@ -36,7 +36,7 @@ class DbadapterCommand extends CConsoleCommand
             DROP TABLE IF EXISTS hnn.user;
             CREATE TABLE hnn.user (
               id int(10) unsigned NOT NULL AUTO_INCREMENT,
-              pass varchar(32) NOT NULL DEFAULT '',
+              pass varchar(128) NOT NULL DEFAULT '',
               mail varchar(64) DEFAULT '',
               first_name varchar(32) DEFAULT '',
               middle_name varchar(32) DEFAULT '',
@@ -52,7 +52,7 @@ class DbadapterCommand extends CConsoleCommand
 		$this->executeQuery($sql);
 
 		$sql = "
-            INSERT INTO hnn.user (id, pass, mail, first_name, middle_name, last_name, created, login, status)
+            insert into hnn.user (id, pass, mail, first_name, middle_name, last_name, created, login, status)
 
                 select u.uid as id, '', u.mail, pv1.value as first_name, pv2.value as middle_name, pv3.value as last_name,
                   u.created, u.login, u.status
@@ -60,9 +60,15 @@ class DbadapterCommand extends CConsoleCommand
                 left join hnn_edit.hnn_profile_values pv1 on u.uid = pv1.uid and pv1.fid = 1
                 left join hnn_edit.hnn_profile_values pv2 on u.uid = pv2.uid and pv2.fid = 2
                 left join hnn_edit.hnn_profile_values pv3 on u.uid = pv3.uid and pv3.fid = 3
-
-                group by pv1.uid;
-
+                where
+                  u.uid in
+                    (select distinct(b.uid) from hnn.blog b
+                    union
+                    select distinct(ba.uid) from hnn.blog_author ba
+                    union
+                    select distinct(a.uid) from hnn.article a)
+                and u.uid != 0
+                group by u.uid;
 		";
 		$result = $this->executeQuery($sql);
 
@@ -170,12 +176,30 @@ class DbadapterCommand extends CConsoleCommand
 		";
 		$this->executeQuery($sql);
 
-		$sql = "
+        $sql = "
 			insert into hnn.blog_author (author, uid)
                 SELECT DISTINCT (author) as author, uid
                 FROM hnn.blog
                 WHERE author !=  ''
                 GROUP BY author
+		";
+        $result = $this->executeQuery($sql);
+
+        $sql = "
+            DROP TABLE IF EXISTS hnn.user_blog_author_xref;
+            CREATE TABLE hnn.user_blog_author_xref (
+              id int(10) unsigned NOT NULL AUTO_INCREMENT,
+              user_id int(10) unsigned NOT NULL,
+              blog_author_id int(10) unsigned NOT NULL,
+              PRIMARY KEY (id)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+		";
+		$this->executeQuery($sql);
+
+		$sql = "
+			insert into hnn.user_blog_author_xref (id, user_id, blog_author_id)
+                SELECT '', ba.uid, ba.id
+                FROM hnn.blog_author ba;
 		";
 		$result = $this->executeQuery($sql);
 
@@ -195,6 +219,10 @@ class DbadapterCommand extends CConsoleCommand
 		}
 
         $sql = "ALTER TABLE hnn.blog DROP COLUMN author;";
+        $command = $connection->createCommand($sql);
+        $command->execute();
+
+        $sql = "ALTER TABLE hnn.blog_author DROP COLUMN uid;";
         $command = $connection->createCommand($sql);
         $command->execute();
 	}
@@ -222,6 +250,17 @@ class DbadapterCommand extends CConsoleCommand
 		$result = $this->executeQuery($sql);
 
 		echo "result: {$result}\n";
+
+		$sql = "
+            DROP TABLE IF EXISTS user_category_xref;
+            CREATE TABLE user_category_xref (
+              id int(10) unsigned NOT NULL AUTO_INCREMENT,
+              user_id int(10) unsigned NOT NULL,
+              category_id int(10) unsigned NOT NULL,
+              PRIMARY KEY (id)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+		";
+		$this->executeQuery($sql);
 
 		$sql = "
 			DROP TABLE IF EXISTS hnn.article_category_xref;

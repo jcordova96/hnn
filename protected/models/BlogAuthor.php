@@ -5,7 +5,6 @@
  *
  * The followings are the available columns in table 'blog_author':
  * @property string $id
- * @property string $uid
  * @property string $author
  * @property string $description
  */
@@ -27,6 +26,22 @@ class BlogAuthor extends CActiveRecord
 	public function tableName()
 	{
 		return 'blog_author';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			array('author', 'length', 'max'=>255),
+			array('description', 'safe'),
+			// The following rule is used by search().
+			// Please remove those attributes that should not be searched.
+			array('id, author, description', 'safe', 'on'=>'search'),
+		);
 	}
 
     public static function getAuthors()
@@ -55,23 +70,6 @@ class BlogAuthor extends CActiveRecord
 
         return $data;
     }
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('uid', 'required'),
-			array('uid', 'length', 'max'=>10),
-			array('author', 'length', 'max'=>255),
-			array('description', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, uid, author, description', 'safe', 'on'=>'search'),
-		);
-	}
 
 	/**
 	 * @return array relational rules.
@@ -91,7 +89,6 @@ class BlogAuthor extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'uid' => 'Uid',
 			'author' => 'Author',
 			'description' => 'Description',
 		);
@@ -109,7 +106,6 @@ class BlogAuthor extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('uid',$this->uid,true);
 		$criteria->compare('author',$this->author,true);
 		$criteria->compare('description',$this->description,true);
 
