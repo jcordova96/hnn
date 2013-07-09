@@ -64,22 +64,25 @@ $blog_authors = BlogAuthor::getAuthors();
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="breaking-news-tab">
-
                 <ul>
-                    <li><a href="#">Link to story 1</a></li>
-                    <li><a href="#">Another headline for the next item, have to see this on ewrap so..</a></li>
-                    <li><a href="#">Third article would be going here</a></li>
-                    <li><a href="#">Link to story 4</a></li>
-                    <li><a href="#">More links to more articles</a></li>
+                    <?php foreach(Article::getBreakingNews() as $article): ?>
+                        <li>
+                            <a href="articles/<?php echo $article['id']; ?>">
+                                <?php echo $article['title']; ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
             <div class="tab-pane" id="history-news-tab">
                 <ul>
-                    <li><a href="#">Another headline for the next item</a></li>
-                    <li><a href="#">Link to story 1</a></li>
-                    <li><a href="#">More links to more articles .. </a></li>
-                    <li><a href="#">Link to story 4</a></li>
-                    <li><a href="#">Third article would be going here</a></li>
+                    <?php foreach(Article::getHistoryNews() as $article): ?>
+                        <li>
+                            <a href="articles/<?php echo $article['id']; ?>">
+                                <?php echo $article['title']; ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
         </div>

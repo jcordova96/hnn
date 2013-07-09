@@ -40,15 +40,24 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 )); ?>
 </div><!-- search-form -->
 
+<br><br>
+<div>
+    <b>user_id (uid):</b>
+    <?php echo $user->id; ?><br>
+    <b>authorized for authors:</b>
+    <?php foreach($blog_authors as $id => $blog_author): ?>
+        <?php echo "{$blog_author}: $id"; ?>,
+    <?php endforeach; ?>
+</div>
+
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'blog-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
-		'uid',
+        'uid',
 		'author_id',
-		'category_id',
 		'title',
         /*
         'source',

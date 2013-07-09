@@ -1,3 +1,4 @@
+
 <?php
 /**
  * User: dataskills dataskills@gmail.com
@@ -22,17 +23,11 @@ class MakeSitemapCommand extends CConsoleCommand
     public function process()
     {
 
-        echo "{$_SERVER['HTTP_HOST']} - Sitemap Generator Tool - Web Version\r\n\r\n";
-
-
-        $sPathToRoot = "";
-        $sLastMod = date("Y-m-d", strtotime("now"));
+        echo "Sitemap Generator Tool - Web Version\r\n\r\n";
 
 
         //File handle
-        $sFilename = "sitemap.{$_SERVER['HTTP_HOST']}.xml";
-        $sFilename = str_replace(array(".loc", ".com"), "", $sFilename);
-
+        $sFilename = "sitemap.hnn.us.xml";
         $aSitemap[] = $sFilename;
 
         //Erase old file
@@ -60,25 +55,22 @@ class MakeSitemapCommand extends CConsoleCommand
         $sContent .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">";
         fwrite($fh, $sContent);
 
-        //Put something HERE to fetch page info to make $aPage array
+        $aPage = Seo::getSitemapData();
 
-        /*
-        $aPage should have the page url as the key and priority as the value. "0.5" is default priority,
-        "1.0" is maximum priority. The priority should be seo importance priority. Example: array("articles/1029"=>"0.8")
-        */
-        $aPage = array();
-
-
-        foreach ($aPage as $sPageName => $sPriority)
+        foreach ($aPage as $i => $aData)
         {
-            $sContent .= "<url>
-                    <loc>" . htmlspecialchars("http://{$_SERVER['HTTP_HOST']}/{$sPageName}", ENT_QUOTES, "UTF-8") . "</loc>
-                    <lastmod>{$sLastMod}</lastmod>
-                    <changefreq>monthly</changefreq>
-                    <priority>{$sPriority}</priority>
+            echo $i."\n";
+
+            $sContent = "<url>
+                    <loc>".htmlspecialchars($aData['loc'], ENT_QUOTES, "UTF-8")."</loc>
+                    <lastmod>{$aData['lastmod']}</lastmod>
+                    <changefreq>{$aData['changefreq']}</changefreq>
+                    <priority>{$aData['priority']}</priority>
                     </url>";
+
+            unset($aData[$i]);
+            fwrite($fh, $sContent);
         }
-        fwrite($fh, $sContent);
 
 
         echo "FINISHING .. .. \r\n\r\n";
@@ -91,5 +83,7 @@ class MakeSitemapCommand extends CConsoleCommand
         echo "[COMPLETE]\r\n\r\n";
     }
 }
+
+
 
 ?>

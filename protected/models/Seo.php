@@ -33,7 +33,32 @@ class Seo extends CActiveRecord
 		return 'seo';
 	}
 
-	/**
+    public static function getSitemapData()
+    {
+        $connection = Yii::app()->db;
+
+        $data = array();
+
+        $sql = "
+			select *
+			from seo_sitemap;
+			";
+
+        $command = $connection->createCommand($sql);
+        $result = $command->queryAll();
+
+//        if(!empty($result))
+//        {
+//            foreach($result as $row)
+//            {
+//            }
+//        }
+
+        return $result;
+    }
+
+
+    /**
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()

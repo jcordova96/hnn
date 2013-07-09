@@ -4,6 +4,15 @@
 /* @var $form CActiveForm */
 ?>
 
+
+<style>
+
+    #article-form select {
+        width: 200px;
+    }
+
+</style>
+
 <div class='form'>
 
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -18,7 +27,7 @@
 
 	<div class='row'>
 		<?php echo $form->labelEx($model,'category_id'); ?>
-		<?php echo $form->dropDownList($model,'category_id', Category::getCategories(), array('size' => 3)); ?>
+		<?php echo $form->dropDownList($model,'category_id', $categories, array('size' => 3)); ?>
 		<?php echo $form->error($model,'category_id'); ?>
 	</div>
 
@@ -74,9 +83,9 @@
     <div class='row'>
         <?php echo $form->labelEx($model,'uid'); ?>
         <?php if($model->isNewRecord): ?>
-            <?php echo $form->textField($model,'uid', array('value' => Yii::app()->user->id)); ?>
+            <?php echo $form->textField($model,'uid', array('value' => $user->id, 'disabled' => true)); ?>
         <?php else: ?>
-            <?php echo $form->textField($model,'uid'); ?>
+            <?php echo $form->textField($model,'uid', array('disabled' => true)); ?>
         <?php endif; ?>
         <?php echo $form->error($model,'uid'); ?>
     </div>

@@ -18,26 +18,18 @@
     <div class="row">
         <?php echo $form->labelEx($model,'uid'); ?>
         <?php if($model->isNewRecord): ?>
-            <?php echo $form->textField($model,'uid', array('value' => Yii::app()->user->id)); ?>
+            <?php echo $form->textField($model,'uid', array('value' => $user->id, 'disabled' => true)); ?>
         <?php else: ?>
-            <?php echo $form->textField($model,'uid'); ?>
+            <?php echo $form->textField($model,'uid', array('disabled' => true)); ?>
         <?php endif; ?>
         <?php echo $form->error($model,'uid'); ?>
     </div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'author_id'); ?>
-        <?php echo $form->dropDownList($model,'author_id', BlogAuthor::getAuthors(), array('size' => 3)); ?>
+        <?php echo $form->dropDownList($model,'author_id', $blog_authors, array('size' => 3)); ?>
 		<?php echo $form->error($model,'author_id'); ?>
 	</div>
-
-    <!--
-    <div class="row">
-        <?php echo $form->labelEx($model,'category_id'); ?>
-        <?php echo $form->dropDownList($model,'category_id', Category::getCategories(), array('size' => 3)); ?>
-        <?php echo $form->error($model,'category_id'); ?>
-    </div>
-    -->
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'title'); ?>

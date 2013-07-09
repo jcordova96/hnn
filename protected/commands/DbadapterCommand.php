@@ -14,13 +14,13 @@ class DbadapterCommand extends CConsoleCommand
 	{
 //		$this->processUsers();
 //		$this->processArticles();
-		$this->processBlogs();
+//		$this->processBlogs();
 //		$this->processTerms();
 //		$this->processFiles();
 //		$this->processComments();
 
 //		$this->processSeo();
-//		$this->processSeoSitemap();
+		$this->processSeoSitemap();
 //		$this->processAds();
 //		$this->processStats();
 
@@ -361,36 +361,39 @@ class DbadapterCommand extends CConsoleCommand
             DROP TABLE IF EXISTS hnn.seo_sitemap;
             CREATE TABLE hnn.seo_sitemap (
               id int(10) unsigned NOT NULL AUTO_INCREMENT,
-              url varchar(128) NOT NULL DEFAULT '',
+              loc varchar(255) NOT NULL DEFAULT '',
+              priority float(5) NOT NULL DEFAULT 0.5,
+              changefreq varchar(20) NOT NULL DEFAULT 'never',
+              lastmod varchar(10) NOT NULL DEFAULT '',
               PRIMARY KEY (id)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
         ";
         $this->executeQuery($sql);
 
         $sql = "
-            INSERT INTO hnn.seo_sitemap (id, url)
-                SELECT '', concat('http://hnn.us/article/', id)
+            INSERT INTO hnn.seo_sitemap (id, loc, lastmod)
+                SELECT '', concat('http://hnn.us/article/', id), DATE_FORMAT(from_unixtime(created),'%Y-%m-%d')
                 FROM hnn.article
             ";
         $this->executeQuery($sql);
 
         $sql = "
-            INSERT INTO hnn.seo_sitemap (id, url)
-                SELECT '', concat('http://hnn.us/blog/', id)
+            INSERT INTO hnn.seo_sitemap (id, loc, lastmod)
+                SELECT '', concat('http://hnn.us/blog/', id), DATE_FORMAT(from_unixtime(created),'%Y-%m-%d')
                 FROM hnn.blog
             ";
         $this->executeQuery($sql);
 
         $sql = "
-            INSERT INTO hnn.seo_sitemap (id, url)
-                SELECT '', concat('http://hnn.us/category/', id)
+            INSERT INTO hnn.seo_sitemap (id, loc, priority, changefreq, lastmod)
+                SELECT '', concat('http://hnn.us/category/', id), 0.8, 'weekly', DATE_FORMAT(NOW(),'%Y-%m-%d')
                 FROM hnn.category
             ";
         $this->executeQuery($sql);
 
         $sql = "
-            INSERT INTO hnn.seo_sitemap (id, url)
-                SELECT '', concat('http://hnn.us/group/', id)
+            INSERT INTO hnn.seo_sitemap (id, loc, priority, changefreq, lastmod)
+                SELECT '', concat('http://hnn.us/group/', id), 0.8, 'weekly', DATE_FORMAT(NOW(),'%Y-%m-%d')
                 FROM hnn.category_group
             ";
         $this->executeQuery($sql);

@@ -101,16 +101,25 @@ class BlogController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->render('create',array(
+        $user = User::model()->findByAttributes(array('mail' => Yii::app()->user->name));
+        $blog_authors = array();
+        if(!empty($user->blog_authors))
+            foreach($user->blog_authors as $blog_author)
+                $blog_authors[$blog_author->id] = $blog_author->author;
+
+        $this->render('create',array(
 			'model'=>$model,
+            'user' => $user,
+            'blog_authors' => $blog_authors,
 		));
 	}
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     * @throws CHttpException
+     */
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
@@ -122,12 +131,27 @@ class BlogController extends Controller
 		{
 			$model->attributes=$_POST['Blog'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+            {
+//				$this->redirect(array('view','id'=>$model->id));
+            }
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        $user = User::model()->findByAttributes(array('mail' => Yii::app()->user->name));
+        $blog_authors = array();
+        if(!empty($user->blog_authors))
+            foreach($user->blog_authors as $blog_author)
+                $blog_authors[$blog_author->id] = $blog_author->author;
+
+        $blog_author_ids = array_keys($blog_authors);
+        if(!in_array($model->author_id, $blog_author_ids) && !empty($model->author_id)) {
+            throw new CHttpException( 403, 'Forbidden!  You are not authorized to modify this blog entry.' );
+        }
+
+        $this->render('update',array(
+            'model'=>$model,
+            'user' => $user,
+            'blog_authors' => $blog_authors,
+        ));
 	}
 
 	/**
@@ -165,9 +189,17 @@ class BlogController extends Controller
 		if(isset($_GET['Blog']))
 			$model->attributes=$_GET['Blog'];
 
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+        $user = User::model()->findByAttributes(array('mail' => Yii::app()->user->name));
+        $blog_authors = array();
+        if(!empty($user->blog_authors))
+            foreach($user->blog_authors as $blog_author)
+                $blog_authors[$blog_author->id] = $blog_author->author;
+
+        $this->render('admin',array(
+            'model'=>$model,
+            'user' => $user,
+            'blog_authors' => $blog_authors,
+        ));
 	}
 
 	/**

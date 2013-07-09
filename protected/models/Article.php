@@ -86,6 +86,40 @@ class Article extends CActiveRecord
     }
 
 
+    public static function getBreakingNews()
+    {
+        $connection = Yii::app()->db;
+        $sql = "
+			select a.id, a.title
+			from article a
+			where a.category_id = 55
+			order by a.created desc
+			limit 5;
+			";
+
+        $command = $connection->createCommand($sql);
+        $result = $command->queryAll();
+        return $result;
+    }
+
+
+    public static function getHistoryNews()
+    {
+        $connection = Yii::app()->db;
+        $sql = "
+			select a.id, a.title
+			from article a
+			where a.category_id = 54
+			order by a.created desc
+			limit 5;
+			";
+
+        $command = $connection->createCommand($sql);
+        $result = $command->queryAll();
+        return $result;
+    }
+
+
     public static function getArticleByCategory($category_id, $params=array())
     {
         $connection = Yii::app()->db;
@@ -221,19 +255,19 @@ class Article extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-//		$criteria->compare('id',$this->id,true);
-//		$criteria->compare('category_id',$this->category_id,true);
+		$criteria->compare('id',$this->id,true);
+		$criteria->compare('category_id',$this->category_id,true);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('author',$this->author,true);
 		$criteria->compare('source',$this->source,true);
-//		$criteria->compare('source_url',$this->source_url,true);
-//		$criteria->compare('source_date',$this->source_date,true);
-//		$criteria->compare('source_bio',$this->source_bio,true);
+		$criteria->compare('source_url',$this->source_url,true);
+		$criteria->compare('source_date',$this->source_date,true);
+		$criteria->compare('source_bio',$this->source_bio,true);
 		$criteria->compare('body',$this->body,true);
-//		$criteria->compare('teaser',$this->teaser,true);
-//		$criteria->compare('uid',$this->uid);
-//		$criteria->compare('status',$this->status);
-//		$criteria->compare('created',$this->created);
+		$criteria->compare('teaser',$this->teaser,true);
+		$criteria->compare('uid',$this->uid);
+		$criteria->compare('status',$this->status);
+		$criteria->compare('created',$this->created);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

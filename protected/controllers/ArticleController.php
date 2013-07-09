@@ -125,16 +125,25 @@ class ArticleController extends Controller
             }
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
+        $user = User::model()->findByAttributes(array('mail' => Yii::app()->user->name));
+        $categories = array();
+        if(!empty($user->categories))
+            foreach($user->categories as $category)
+                $categories[$category->id] = $category->name;
+
+		$this->render('create', array(
+            'model' => $model,
+            'user' => $user,
+            'categories' => $categories,
 		));
 	}
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     * @throws CHttpException
+     */
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
@@ -155,8 +164,22 @@ class ArticleController extends Controller
             }
 		}
 
-		$this->render('update',array(
+        $user = User::model()->findByAttributes(array('mail' => Yii::app()->user->name));
+        $categories = array();
+        if(!empty($user->categories))
+            foreach($user->categories as $category)
+                $categories[$category->id] = $category->name;
+
+        $category_ids = array_keys($categories);
+//        echo $model->category_id.' - '.print_r($category_ids, true);
+        if(!in_array($model->category_id, $category_ids) && !empty($model->category_id)) {
+            throw new CHttpException( 403, 'Forbidden!  You are not authorized to modify this article.' );
+        }
+
+        $this->render('update',array(
 			'model'=>$model,
+            'user' => $user,
+            'categories' => $categories,
 		));
 	}
 
@@ -196,9 +219,17 @@ class ArticleController extends Controller
 		if(isset($_GET['Article']))
 			$model->attributes=$_GET['Article'];
 
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+        $user = User::model()->findByAttributes(array('mail' => Yii::app()->user->name));
+        $categories = array();
+        if(!empty($user->categories))
+            foreach($user->categories as $category)
+                $categories[$category->id] = $category->name;
+
+        $this->render('admin', array(
+            'model' => $model,
+            'user' => $user,
+            'categories' => $categories,
+        ));
 	}
 
 	/**
