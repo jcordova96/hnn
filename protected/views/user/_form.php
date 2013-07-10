@@ -26,6 +26,22 @@ if ($this->action->id == 'update')
 }
 ?>
 
+<style>
+
+    .user-category-assignment-table td {
+        vertical-align: middle;
+        width: 350px;
+        padding: 0 0 4px 0;
+        margin: 0;
+    }
+
+    .user-category-assignment-table td input {
+        padding: 0;
+        margin: 0;
+    }
+
+</style>
+
 <div class="form">
 
     <?php $form = $this->beginWidget('CActiveForm', array(
@@ -164,12 +180,13 @@ if ($this->action->id == 'update')
 
             <div class="row">
                 <h2>User Category Assignment </h2>
-                <table>
+                <table class="user-category-assignment-table">
                     <tr>
                         <?php foreach ($aCategoryInfo as $category_id => $category_name): ?>
                             <td>
-                                <?php echo CHtml::label($category_name, 'categories[' . $category_id . ']'); ?>
                                 <?php echo CHtml::checkBox('categories[' . $category_id . ']', (in_array($category_name, $aUserCategory))); /* See if current category in user category array to see if should be checked */ ?>
+                                <span><?php echo $category_name; ?></span>
+                                <?php //echo CHtml::label($category_name, 'categories[' . $category_id . ']'); ?>
                             </td>
                             <?php $row_num++;
                             echo (($row_num % 3) == 0) ? "</tr><tr>" : ""; ?>
