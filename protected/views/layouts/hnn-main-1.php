@@ -53,13 +53,13 @@
             <ul id="menu">
                 <li><a href="#">HNN Information</a>
                     <ul>
-                        <li><a href="#">Submissions</a></li>
-                        <li><a href="#">Advertising</a></li>
-                        <li><a href="#">Donations</a></li>
-                        <li><a href="#">Archives</a></li>
-                        <li><a href="#">Internships</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">FAQ</a></li>
+                        <li><a href="submissions">Submissions</a></li>
+                        <li><a href="advertising">Advertising</a></li>
+                        <li><a href="donations">Donations</a></li>
+                        <li><a href="archives">Archives</a></li>
+                        <li><a href="internships">Internships</a></li>
+                        <li><a href="aboutus">About Us</a></li>
+                        <li><a href="faq">FAQ</a></li>
                     </ul>
                 </li>
             </ul>
@@ -162,13 +162,13 @@
             <ul class="clearfix">
                 <li><a href="#" class="current" data-description="Home Page">Newsletter</a>
                 </li>
-                <li><a href="#">Submissions</a></li>
-                <li><a href="#">Advertising</a></li>
-                <li><a href="#">Donations</a></li>
-                <li><a href="#">Archives</a></li>
-                <li><a href="#">Internships</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">FAQ</a></li>
+                <li><a href="submissions">Submissions</a></li>
+                <li><a href="advertising">Advertising</a></li>
+                <li><a href="donations">Donations</a></li>
+                <li><a href="archives">Archives</a></li>
+                <li><a href="internships">Internships</a></li>
+                <li><a href="aboutus">About Us</a></li>
+                <li><a href="faq">FAQ</a></li
             </ul>
         </nav>
         <!-- /#footer-menu -->
@@ -176,6 +176,7 @@
     </div>
     <!-- /#copyright .clearfix -->
 
+    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/js/foot.js"></script>
 </footer>
 <!-- /#footer .container -->
 
